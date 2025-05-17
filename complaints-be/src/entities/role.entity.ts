@@ -41,6 +41,8 @@ export class Role extends AbstractEntity {
   userRoles: UserRole[];
 
   // ROLE PERMISSIONS
-  @OneToMany(() => RolePermission, (rolePermission) => rolePermission.role)
+  @OneToMany(() => RolePermission, (rolePermission) => rolePermission.role, {
+    eager: true
+  })
   rolePermissions: RolePermission[];
 }

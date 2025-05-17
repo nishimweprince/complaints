@@ -34,6 +34,7 @@ export class AuthService {
         phoneNumber: true,
         passwordHash: true,
         userRoles: {
+          id: true,
           role: {
             id: true,
             name: true,
@@ -42,6 +43,15 @@ export class AuthService {
                 id: true,
                 name: true,
               },
+            },
+          },
+        },
+      },
+      relations: {
+        userRoles: {
+          role: {
+            rolePermissions: {
+              permission: true,
             },
           },
         },

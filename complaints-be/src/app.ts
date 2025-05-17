@@ -6,6 +6,7 @@ import { AppDataSource } from "./data-source";
 import errorHandler from "./middlewares/errors.middleware";
 import routes from "./routes";
 import logger from "./helpers/logger.helper";
+import { seed } from "./seeders";
 
 // CREATE EXPRESS APP
 const app: Application = express();
@@ -22,8 +23,11 @@ app.use(errorHandler);
 
 // DATABASE CONNECTION
 AppDataSource.initialize()
-  .then(() => {
+  .then(async () => {
     logger.success(`${process.env.DB_NAME} connected`);
+    // SEED DATA
+    await seed();
+    logger.success("Seeded successfully");
   })
   .catch((error) => {
     logger.error("Database connection failed", error);

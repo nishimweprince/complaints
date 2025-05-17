@@ -19,12 +19,14 @@ export class UserRole extends AbstractEntity {
    */
 
   // USER
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User, (user) => user.userRoles)
   @JoinColumn({ name: "user_id" })
   user: User;
 
   // ROLE
-  @ManyToOne(() => Role, (role) => role.id)
+  @ManyToOne(() => Role, (role) => role.userRoles, {
+    eager: true
+  })
   @JoinColumn({ name: "role_id" })
   role: Role;
 }

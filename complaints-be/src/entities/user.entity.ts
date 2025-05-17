@@ -44,6 +44,9 @@ export class User extends AbstractEntity {
    */
 
   // USER ROLES
-  @OneToMany(() => UserRole, (userRole) => userRole.user)
+  @OneToMany(() => UserRole, (userRole) => userRole.user, {
+    cascade: true,
+    eager: true
+  })
   userRoles: UserRole[];
 }
