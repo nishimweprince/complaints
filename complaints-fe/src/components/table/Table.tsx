@@ -35,7 +35,7 @@ import {
     showExport?: boolean;
     page?: number;
     size?: number;
-    totalElements?: number;
+    totalCount?: number;
     totalPages?: number;
     setPage?: (page: number) => UnknownAction;
     setSize?: (size: number) => UnknownAction;
@@ -51,7 +51,7 @@ import {
     showPagination = true,
     page = 1,
     size = 10,
-    totalElements = 0,
+    totalCount = 0,
     totalPages = 1,
     setPage,
     setSize,
@@ -202,7 +202,7 @@ import {
           <DataTablePagination
             page={page}
             size={size}
-            totalElements={totalElements}
+            totalCount={totalCount}
             totalPages={totalPages}
             table={table}
             setPage={setPage}

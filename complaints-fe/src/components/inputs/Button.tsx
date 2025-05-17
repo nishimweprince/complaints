@@ -1,6 +1,8 @@
 import { MouseEventHandler, ReactNode } from 'react';
 import { Link, To } from 'react-router-dom';
 import Loader from './Loader';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface ButtonProps {
   children: ReactNode;
@@ -12,6 +14,7 @@ interface ButtonProps {
   primary?: boolean;
   danger?: boolean;
   variant?: 'primary' | 'danger' | 'secondary' | 'outline';
+  icon?: IconProp;
 }
 
 const Button = ({
@@ -22,6 +25,7 @@ const Button = ({
   onClick,
   isLoading,
   variant = 'primary',
+  icon,
 }: ButtonProps) => {
 
   let variantClasses = '';
@@ -47,7 +51,7 @@ const Button = ({
     return (
       <button
         type={type}
-        className={`${variantClasses} inline-flex items-center justify-center cursor-pointer px-4 py-2 text-sm font-normal text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 transition-colors duration-200 ${className}`}
+        className={`${variantClasses} inline-flex items-center justify-center cursor-pointer px-4 py-[6px] text-sm font-normal text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 transition-colors duration-200 ${className}`}
       >
         {isLoading ? <Loader className="text-white" /> : children}
       </button>
@@ -58,8 +62,9 @@ const Button = ({
     <Link
       to={to || ''}
       onClick={onClick}
-      className={`${variantClasses} inline-flex items-center justify-center cursor-pointer px-4 py-2 text-sm font-normal text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 transition-colors duration-200 ${className}`}
+      className={`${variantClasses} inline-flex items-center justify-center cursor-pointer px-4 py-[6px] text-sm font-normal text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 transition-colors duration-200 ${className}`}
     >
+      {icon && <FontAwesomeIcon icon={icon} className="mr-2" />}
       {isLoading ? <Loader className="text-white" /> : children}
     </Link>
   );

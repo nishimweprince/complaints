@@ -1,4 +1,4 @@
-import { faBus, faChartLine, IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { faBuilding, faChartLine, IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
 interface NavigationItem {
   title: string;
@@ -14,8 +14,8 @@ export const SIDEBAR_NAV_ITEMS: NavigationItem[] = [
     icon: faChartLine,
   },
   {
-    title: "Trips",
-    path: `/trips`,
-    icon: faBus,
+    title: "Institutions",
+    path: `/institutions`,
+    icon: faBuilding,
   },
 ];

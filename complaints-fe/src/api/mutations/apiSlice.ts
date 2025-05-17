@@ -18,7 +18,20 @@ export const apiSlice = createApi({
         body: { username, password },
       }),
     }),
+
+    /**
+     * INSTITUTIONS
+     */
+
+    // CREATE INSTITUTION
+    createInstitution: builder.mutation({
+      query: (data) => ({
+        url: "/institutions",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation } = apiSlice;
+export const { useLoginMutation, useCreateInstitutionMutation } = apiSlice;

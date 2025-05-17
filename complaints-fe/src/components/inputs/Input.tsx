@@ -149,7 +149,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <label className={`flex flex-col gap-[5px] w-full ${labelClassName}`}>
         <p
           className={`${
-            label ? "pl-1 flex items-center gap-[5px] text-[14px]" : "hidden"
+            label ? "pl-1 flex items-center gap-[5px] text-[13px]" : "hidden"
           }`}
         >
           {label}{" "}
@@ -163,24 +163,24 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           )}
         </p>
 
-        <section className="relative w-full">
+        <fieldset className="relative w-full">
           {prefixIcon || prefixText ? (
-            <div className="absolute inset-y-0 start-0 flex items-center ps-3.5">
+            <nav className="absolute inset-y-0 start-0 flex items-center ps-3.5">
               <Link
                 to={"#"}
                 onClick={prefixIconHandler}
                 className="text-secondary hover:text-primary transition-colors duration-200"
               >
                 {prefixIcon && (
-                  <FontAwesomeIcon className="text-[14px]" icon={prefixIcon} />
+                  <FontAwesomeIcon className="text-[13px]" icon={prefixIcon} />
                 )}
-                {prefixText && <p className="text-[14px]">{prefixText}</p>}
+                {prefixText && <p className="text-[13px]">{prefixText}</p>}
               </Link>
-            </div>
+            </nav>
           ) : null}
 
           {(suffixIcon || showSearchSuffix) && (
-            <div className="absolute inset-y-0 end-0 flex items-center pe-3.5">
+            <nav className="absolute inset-y-0 end-0 flex items-center pe-3.5">
               <Link
                 to={"#"}
                 onClick={suffixIconHandler}
@@ -189,11 +189,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 }`}
               >
                 <FontAwesomeIcon
-                  className="text-[14px]"
+                  className="text-[13px]"
                   icon={suffixIcon || faSearch}
                 />
               </Link>
-            </div>
+            </nav>
           )}
 
           {isLoading ? (
@@ -221,13 +221,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 font-normal
                 placeholder:!font-light
                 placeholder:text-[13px] 
-                text-[14px]
+                text-[13px]
                 flex items-center w-full
                 rounded-lg border-[1.5px]
                 border-secondary border-opacity-50
-                outline-none focus:outline-none
-                focus:border-[1.6px] focus:border-primary
+                focus:ring-none
+                focus:border-primary
                 ease-in-out duration-50
+                !bg-transparent
                 ${className}
                 ${prefixIcon && "ps-10"}
                 ${prefixText ? "ps-[3.6rem]" : ""}
@@ -240,7 +241,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             />
           )}
           {errorMessage && <InputErrorMessage className="mt-1" message={errorMessage} />}
-        </section>
+        </fieldset>
       </label>
     );
   }

@@ -2,15 +2,24 @@ import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "./slices/authSlice";
 import { apiSlice } from "@/api/mutations/apiSlice";
 import sidebarSlice from "./slices/sidebarSlice";
+import { apiQuerySlice } from "@/api/queies/apiQuerySlice";
+import institutionSlice from "./slices/institutionSlice";
+import categorySlice from "./slices/categorySlice";
 
 export const store = configureStore({
   reducer: {
     auth: authSlice,
     sidebar: sidebarSlice,
+    institution: institutionSlice,
+    category: categorySlice,
     [apiSlice.reducerPath]: apiSlice.reducer,
+    [apiQuerySlice.reducerPath]: apiQuerySlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware),
+    getDefaultMiddleware().concat(
+      apiSlice.middleware,
+      apiQuerySlice.middleware
+    ),
   devTools: true,
 });
 
