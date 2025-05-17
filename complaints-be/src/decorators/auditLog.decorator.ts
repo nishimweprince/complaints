@@ -1,9 +1,10 @@
 import { AuditLogService } from "../services/auditLog.service";
 import { UUID } from "../types";
 import { AuditContext } from "../middlewares/auditContext.middleware";
+import { AuditLogEntityTypes } from "../constants/auditLog.constants";
 
 interface AuditOptions {
-  entityType: string;
+  entityType: AuditLogEntityTypes;
   getUserId?: (args: any[]) => UUID | undefined;
   getEntityId: (args: any[]) => UUID;
   getEntity?: (args: any[]) => any;

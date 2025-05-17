@@ -1,7 +1,9 @@
-import { Column, Entity, OneToMany } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 import { AbstractEntity } from "./index";
+import { UUID } from "../types";
 import { IsEmail } from "class-validator";
 import { UserRole } from "./userRole.entity";
+import { Institution } from "./institution.entity";
 
 @Entity("users")
 export class User extends AbstractEntity {
@@ -28,7 +30,7 @@ export class User extends AbstractEntity {
     nullable: true,
     select: false,
   })
-  passwordHash: string;
+  passwordHash?: string;
 
   // PHONE NUMBER
   @Column({
@@ -39,14 +41,25 @@ export class User extends AbstractEntity {
   })
   phoneNumber?: string;
 
+  // INSTITUTION ID
+  @Column({ name: "institution_id", type: "uuid", nullable: true })
+  institutionId?: UUID;
+
   /**
    * RELATIONS
    */
 
+  // INSTITUTION
+  @ManyToOne(() => Institution, (institution) => institution.id, {
+    onDelete: "SET NULL",
+    onUpdate: "CASCADE",
+  })
+  institution: Institution;
+
   // USER ROLES
   @OneToMany(() => UserRole, (userRole) => userRole.user, {
     cascade: true,
-    eager: true
+    eager: true,
   })
   userRoles: UserRole[];
 }

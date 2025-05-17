@@ -4,6 +4,7 @@ import { User } from "../entities/user.entity";
 import { ConflictError, ValidationError } from "../helpers/errors.helper";
 import { comparePasswords, hashPassword } from "../helpers/encryption.helper";
 import jwt from "jsonwebtoken";
+import { UUID } from "../types";
 
 export class AuthService {
   private userRepository: Repository<User>;
@@ -24,6 +25,7 @@ export class AuthService {
   }): Promise<{
     user: User;
     token: string;
+    permissions: string[];
   }> {
     const userExists = await this.userRepository.findOne({
       where: [{ email: username }, { phoneNumber: username }],
@@ -46,8 +48,14 @@ export class AuthService {
             },
           },
         },
+        institution: {
+          id: true,
+          name: true,
+          categories: true,
+        },
       },
       relations: {
+        institution: true,
         userRoles: {
           role: {
             rolePermissions: {
@@ -71,21 +79,34 @@ export class AuthService {
       throw new ValidationError("Email or password is incorrect");
     }
 
-    const token = jwt.sign(
-      {
-        userId: userExists.id,
-        permissions: userExists.userRoles
+    const permissions = [
+      ...new Set(
+        userExists?.userRoles
           .flatMap((userRole) =>
             userRole.role.rolePermissions.map(
               (rolePermission) => rolePermission.permission.name
             )
           )
-          .filter((permission) => permission !== null),
+          .filter((permission) => permission !== null)
+      ),
+    ];
+
+    const token = jwt.sign(
+      {
+        userId: userExists.id,
+        permissions,
       },
       process.env.JWT_SECRET || ""
     );
 
-    return { user: userExists, token };
+    return {
+      user: {
+        ...userExists,
+        passwordHash: undefined,
+      },
+      token,
+      permissions,
+    };
   }
 
   /**
@@ -94,9 +115,11 @@ export class AuthService {
   async signup({
     username,
     password,
+    institutionId,
   }: {
     username: string;
     password: string;
+    institutionId?: UUID;
   }): Promise<{
     user: User;
     token: string;
@@ -116,6 +139,7 @@ export class AuthService {
     const newUser = await this.userRepository.save({
       email: username,
       passwordHash,
+      institutionId,
     });
 
     const token = jwt.sign(
