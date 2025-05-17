@@ -35,9 +35,9 @@ export const useFetchInstitutions = () => {
 
   useEffect(() => {
     if (institutionsIsSuccess) {
-      dispatch(setInstitutionsList(institutionsData?.data?.rows || []));
-      setTotalCount(institutionsData?.data?.setTotalCount || 0);
-      setTotalPages(institutionsData?.data?.totalPages || 0);
+      dispatch(setInstitutionsList(institutionsData?.data?.rows));
+      setTotalCount(institutionsData?.data?.totalCount);
+      setTotalPages(institutionsData?.data?.totalPages);
     }
   }, [
     dispatch,

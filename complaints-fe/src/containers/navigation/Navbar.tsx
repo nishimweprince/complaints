@@ -11,6 +11,7 @@ import {
 import { FC, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/states/hooks";
 import { setLogout } from "@/states/slices/authSlice";
+import { Heading } from "@/components/inputs/TextInputs";
 
 interface Props {
   className?: string;
@@ -63,7 +64,7 @@ const Navbar = ({ className }: Props) => {
         to="/"
         className="flex-shrink-0 text-2xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent hover:opacity-80 transition-opacity duration-200"
       >
-        Complaints
+        <Heading type="h2">{user?.institution?.name || "Complaints"}</Heading>
       </Link>
 
       <section className="flex items-center gap-2 sm:gap-3 ml-auto">
