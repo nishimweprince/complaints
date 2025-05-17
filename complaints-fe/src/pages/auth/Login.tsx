@@ -36,7 +36,7 @@ const Login = () => {
   });
 
   return (
-    <main className="w-full h-screen items-center justify-center flex flex-col gap-4">
+    <main className="w-full h-screen items-center justify-center flex flex-col gap-4 bg-background">
       <form
         className="w-full py-8 max-w-[35%] sm:max-w-[35%] md:max-w-[35%] lg:max-w-[35%] shadow-md rounded-md bg-white p-4 mx-auto flex flex-col gap-4"
         onSubmit={onSubmit}

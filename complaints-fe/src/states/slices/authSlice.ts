@@ -1,15 +1,18 @@
 import { localStorageAdapter } from "@/adapters/storage/localStorage.adapter";
+import { PermissionNames } from "@/constants/permission.constants";
 import { User } from "@/types/user.type";
 import { createSlice } from "@reduxjs/toolkit";
 
 interface AuthState {
   user?: User;
   token?: string;
+  permissions: PermissionNames[];
 }
 
 const initialState: AuthState = {
   user: (await localStorageAdapter.getItem("user")) || undefined,
   token: (await localStorageAdapter.getItem("token")) || undefined,
+  permissions: (await localStorageAdapter.getItem("permissions")) || [],
 };
 
 const authSlice = createSlice({
@@ -29,10 +32,16 @@ const authSlice = createSlice({
       state.token = undefined;
       localStorageAdapter.removeItem("user");
       localStorageAdapter.removeItem("token");
+      localStorageAdapter.removeItem("permissions");
+    },
+    setPermissions: (state, action) => {
+      state.permissions = action.payload;
+      localStorageAdapter.setItem("permissions", action.payload);
     },
   },
 });
 
-export const { setUser, setToken, setLogout } = authSlice.actions;
+export const { setUser, setToken, setLogout, setPermissions } =
+  authSlice.actions;
 
 export default authSlice.reducer;

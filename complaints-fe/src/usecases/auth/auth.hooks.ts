@@ -1,6 +1,6 @@
 import { useLoginMutation } from "@/api/mutations/apiSlice";
 import { useAppDispatch } from "@/states/hooks";
-import { setToken, setUser } from "@/states/slices/authSlice";
+import { setPermissions, setToken, setUser } from "@/states/slices/authSlice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -32,6 +32,7 @@ export const useLogin = () => {
       toast.success("Login successful");
       dispatch(setToken(loginData?.data.token));
       dispatch(setUser(loginData?.data.user));
+      dispatch(setPermissions(loginData?.data?.permissions));
       navigate("/");
     } else if (loginIsError) {
       toast.error(
