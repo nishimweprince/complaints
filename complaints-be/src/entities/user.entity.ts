@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { AbstractEntity } from "./index";
 import { UUID } from "../types";
 import { IsEmail } from "class-validator";
@@ -53,7 +53,9 @@ export class User extends AbstractEntity {
   @ManyToOne(() => Institution, (institution) => institution.id, {
     onDelete: "SET NULL",
     onUpdate: "CASCADE",
+    eager: true,
   })
+  @JoinColumn({ name: "institution_id" })
   institution: Institution;
 
   // USER ROLES
