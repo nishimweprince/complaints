@@ -17,6 +17,7 @@ import {
   getPagingData,
   Pagination,
 } from "../helpers/pagination.helper";
+import logger from "../helpers/logger.helper";
 
 export class InstitutionService {
   private readonly institutionRepository: Repository<Institution>;
@@ -70,15 +71,19 @@ export class InstitutionService {
       });
 
       // SEND INSTITUTION USER CREATED EMAIL
-      await sendEmail({
-        toEmail: admin?.email,
-        subject: "Institution User Created",
-        htmlContent: institutionUserCreatedTemplate({
-          institution: newInstitution,
-          password,
-          user: newAdmin,
-        }),
-      });
+      try {
+        await sendEmail({
+          toEmail: admin?.email,
+          subject: "Institution User Created",
+          htmlContent: institutionUserCreatedTemplate({
+            institution: newInstitution,
+            password,
+            user: newAdmin,
+          }),
+        });
+      } catch (error) {
+        logger.error(error);
+      }
     }
 
     return newInstitution;
