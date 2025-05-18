@@ -14,28 +14,91 @@ import {
   Pagination,
 } from '../helpers/pagination.helper';
 import { TicketMessage } from '../entities/ticketMessage.entity';
+import { Category } from '../entities/category.entity';
+import { Institution } from '../entities/institution.entity';
+import { generateResponse } from '../helpers/claude.helper';
+import {
+  getCategoryTemplate,
+  getInstitutionTemplate,
+} from '../templates/tickets/routing.templates';
 
 export class TicketService {
   private readonly ticketRepository: Repository<Ticket>;
   private readonly ticketMessageRepository: Repository<TicketMessage>;
+  private readonly categoryRepository: Repository<Category>;
+  private readonly institutionRepository: Repository<Institution>;
 
   constructor() {
     this.ticketRepository = AppDataSource.getRepository(Ticket);
     this.ticketMessageRepository = AppDataSource.getRepository(TicketMessage);
+    this.categoryRepository = AppDataSource.getRepository(Category);
+    this.institutionRepository = AppDataSource.getRepository(Institution);
   }
   /**
    * CREATE TICKET
    */
   async createTicket({
     ticket,
-    ticketMessage
+    ticketMessage,
   }: {
     ticket: Partial<Ticket>;
     ticketMessage: Partial<TicketMessage>;
   }): Promise<Ticket> {
-
     // GENERATE REFERENCE ID
     let referenceId = generateReferenceID('T', 5);
+
+    // INITIALIZE CATEGORY AND INSTITUTION
+    let categoryId: UUID | undefined = ticket?.categoryId;
+    let institutionId: UUID | undefined = ticket?.assignedInstitutionId;
+
+    // CHECK IF CATEGORY AND INSTITUTION EXISTS
+    if (!categoryId) {
+      const categories = await this.categoryRepository.find();
+
+      // IF NO CATEGORY PROVIDED, GENERATE CATEGORY
+      if (categories?.length > 0) {
+        const categoryTemplate = getCategoryTemplate(
+          categories,
+          ticketMessage?.message || 'No ticket message provided'
+        );
+
+        const category = await generateResponse(categoryTemplate);
+
+        if (category && JSON.parse(category)) {
+          const categoryData = JSON.parse(category);
+          categoryId = categoryData?.id;
+        }
+      }
+    }
+
+    // CHECK IF INSTITUTION EXISTS
+    if (!institutionId) {
+      const institutions = await this.institutionRepository.find();
+
+      // IF NO INSTITUTION PROVIDED, GENERATE INSTITUTION
+      if (institutions?.length > 0) {
+        const institutionTemplate = getInstitutionTemplate(
+          institutions,
+          ticketMessage?.message || 'No ticket message provided'
+        );
+
+        const institution = await generateResponse(institutionTemplate);
+
+        if (institution && JSON.parse(institution)) {
+          const institutionData = JSON.parse(institution);
+          institutionId = institutionData?.id;
+        }
+      }
+    }
+
+    // SET CATEGORY AND INSTITUTION
+    if (categoryId) {
+      ticket.categoryId = categoryId;
+    }
+
+    if (institutionId) {
+      ticket.assignedInstitutionId = institutionId;
+    }
 
     // CHECK IF REFERENCE ID EXISTS
     while (

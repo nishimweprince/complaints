@@ -56,11 +56,56 @@ src/
 ├── middlewares/       # Express middlewares
 ├── routes/            # API route definitions
 ├── services/          # Business logic and service layer
+├── templates/         # Email and ticket routing templates
+│   ├── emails/       # Email notification templates
+│   └── tickets/      # Ticket routing and processing templates
 ├── types/             # TypeScript type definitions
 ├── app.ts            # Express application setup
 ├── data-source.ts    # TypeORM database configuration
 └── server.ts         # Server entry point
 ```
+
+## AI-Powered Ticket Routing
+
+The system implements intelligent ticket routing using AI to automatically:
+
+- Assign tickets to the most appropriate institution based on content analysis
+- Categorize tickets using natural language processing
+- Optimize ticket distribution for efficient handling
+
+The AI routing system:
+- Analyzes ticket content and context
+- Matches tickets with the most suitable institution
+- Suggests appropriate categories
+- Learns from historical routing decisions
+- Maintains routing templates for consistent decision-making
+
+### Example: AI-Based Ticket Routing
+
+When a new ticket is created, the system automatically analyzes its content to determine the appropriate institution and category. Here's how it works:
+
+```typescript
+// Example ticket creation with AI routing
+const ticket = await ticketService.createTicket({
+  ticket: {
+    title: "Road Maintenance Issue",
+    // No category or institution specified - AI will determine these
+  },
+  ticketMessage: {
+    message: "There are potholes on Main Street that need urgent attention. The road is becoming dangerous for drivers."
+  }
+});
+
+// The system will:
+// 1. Analyze the message content
+// 2. Use AI to determine the appropriate category (e.g., "Infrastructure")
+// 3. Route to the relevant institution (e.g., "Department of Public Works")
+```
+
+The routing logic can be found in:
+- `src/services/ticket.service.ts` - Main routing implementation
+- `src/templates/tickets/routing.templates.ts` - AI prompt templates
+- `src/helpers/claude.helper.ts` - AI integration
 
 ## Audit Logging
 

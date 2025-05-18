@@ -100,8 +100,6 @@ export class Ticket extends AbstractEntity {
   category: Category;
 
   // MESSAGES
-  @OneToMany(() => TicketMessage, (message) => message.ticket, {
-    onDelete: "SET NULL",
-  })
+  @OneToMany(() => TicketMessage, (message) => message.ticket)
   messages: TicketMessage[];
 }
