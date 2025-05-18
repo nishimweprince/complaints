@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 /**
  * Generate a random string of a given length.
  * @param length - The length of the string to generate.
@@ -38,3 +40,22 @@ export function capitalizeCamelCase(string: string) {
     })
     .trim();
 }
+
+/**
+ * Generates a unique reference ID consisting of a prefix, the current year, and a random number.
+ *
+ * @param prefix - The string prefix for the reference ID. Defaults to 'AK'.
+ * @param length - The number of digits in the random part of the ID. Defaults to 3.
+ * @returns A string in the format `${prefix}-${currentYear}-${randomNumber}`.
+ *
+ */
+export const generateReferenceID = (
+  prefix: string = 'T',
+  length: number = 3
+) => {
+  const randomPart = Math.floor(
+    1000 + Math.random() * 9 * Math.pow(10, length)
+  );
+
+  return `${prefix}-${moment().format('YYYY')}-${randomPart}`;
+};

@@ -113,6 +113,7 @@ export class InstitutionService {
   @AuditUpdate({
     entityType: AuditLogEntityTypes.INSTITUTION,
     getEntityId: (args) => args[0].id,
+    getEntity: (args) => args[0].institution,
     getUserId: (args) => args[0]?.metadata?.createdById,
   })
   async updateInstitution({

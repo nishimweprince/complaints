@@ -2,16 +2,26 @@ import { TicketStatus } from "../constants/ticket.constants";
 import { TicketPriority } from "../constants/ticket.constants";
 import { UUID } from "../types";
 import { AbstractEntity } from "./index";
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { Institution } from "./institution.entity";
 import { User } from "./user.entity";
 import { Category } from "./category.entity";
+import { TicketMessage } from "./ticketMessage.entity";
 
 @Entity("tickets")
 export class Ticket extends AbstractEntity {
   // TITLE
   @Column({ name: "title", type: "varchar", nullable: false })
   title: string;
+
+  // REFERENCE ID
+  @Column({
+    name: "reference_id",
+    type: "varchar",
+    unique: true,
+    nullable: false,
+  })
+  referenceId: string;
 
   // STATUS
   @Column({
@@ -88,4 +98,10 @@ export class Ticket extends AbstractEntity {
   })
   @JoinColumn({ name: "category_id" })
   category: Category;
+
+  // MESSAGES
+  @OneToMany(() => TicketMessage, (message) => message.ticket, {
+    onDelete: "SET NULL",
+  })
+  messages: TicketMessage[];
 }
