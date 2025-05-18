@@ -7,6 +7,7 @@ import institutionSlice from "./slices/institutionSlice";
 import categorySlice from "./slices/categorySlice";
 import ticketSlice from "./slices/ticketSlice";
 import ticketMessageSlice from "./slices/ticketMessageSlice";
+import auditLogSlice from "./slices/auditLogSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     category: categorySlice,
     ticket: ticketSlice,
     ticketMessage: ticketMessageSlice,
+    auditLog: auditLogSlice,
     [apiSlice.reducerPath]: apiSlice.reducer,
     [apiQuerySlice.reducerPath]: apiQuerySlice.reducer,
   },

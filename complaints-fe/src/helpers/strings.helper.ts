@@ -53,3 +53,41 @@ export const formatDate = (
   if (!date) return '';
   return moment(date).format(format);
 };
+
+/**
+ * Get the background color for a status.
+ * @param status - The status to get the background color for.
+ * @returns The background color.
+ */
+export const getStatusBackgroundColor = (status?: string) => {
+  let bgColor =
+    'bg-gray-700 text-center p-[3px] px-4 text-white text-normal rounded-md text-[12px]';
+  switch (status) {
+    case 'PENDING':
+    case 'OPEN':
+      bgColor =
+        'bg-yellow-700 text-center p-1 px-4 text-white text-normal rounded-lg text-[12px]';
+      break;
+    case 'COMPLETED':
+      bgColor =
+        'bg-green-700 text-center p-1 px-4 text-white text-normal rounded-lg text-[12px]';
+      break;
+    case 'REJECTED':
+    case 'CLOSED':
+      bgColor =
+        'bg-red-700 text-center p-1 px-4 text-white text-normal rounded-lg text-[12px]';
+      break;
+    case 'IN_PROGRESS':
+      bgColor =
+        'bg-orange-700 text-center p-1 px-4 text-white text-normal rounded-lg text-[12px]';
+      break;
+    case 'REOPENED':
+      bgColor =
+        'bg-yellow-700 text-center p-1 px-4 text-white text-normal rounded-lg text-[12px]';
+      break;
+    default:
+      bgColor =
+        'bg-gray-700 text-center p-1 px-4 text-white text-normal rounded-lg text-[12px]';
+  }
+  return bgColor;
+};

@@ -1,12 +1,13 @@
-import { Route, Routes } from "react-router-dom";
-import LandingPage from "@/pages/common/LandingPage";
-import Login from "@/pages/auth/Login";
-import Dashboard from "@/pages/dashboard";
-import InstitutionsPage from "@/pages/institutions/InstitutionsPage";
-import TicketsPage from "@/pages/tickets/TicketsPage";
-import AuthenticatedRoutes from "./AuthenticatedRoutes";
-import CreateTicketPage from "@/pages/tickets/CreateTicketPage";
-import TicketDetailsPage from "@/pages/tickets/TicketDetailsPage";
+import { Route, Routes } from 'react-router-dom';
+import LandingPage from '@/pages/common/LandingPage';
+import Login from '@/pages/auth/Login';
+import Dashboard from '@/pages/dashboard';
+import InstitutionsPage from '@/pages/institutions/InstitutionsPage';
+import TicketsPage from '@/pages/tickets/TicketsPage';
+import AuthenticatedRoutes from './AuthenticatedRoutes';
+import CreateTicketPage from '@/pages/tickets/CreateTicketPage';
+import TicketDetailsPage from '@/pages/tickets/TicketDetailsPage';
+import TicketHistoryPage from '@/pages/tickets/TicketHistoryPage';
 
 const Router = () => {
   return (
@@ -43,6 +44,14 @@ const Router = () => {
           <Route path="" element={<TicketsPage />} />
           <Route path="create" element={<CreateTicketPage />} />
           <Route path=":id" element={<TicketDetailsPage />} />
+          <Route path=":id/history" element={<TicketHistoryPage />} />
+        </Route>
+
+        {/**
+         * AUDIT LOGS ROUTES
+         */}
+        <Route path="/audit-logs">
+          <Route path="" element={<TicketHistoryPage />} />
         </Route>
       </Route>
     </Routes>

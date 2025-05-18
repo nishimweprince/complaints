@@ -63,6 +63,18 @@ export const apiQuerySlice = createApi({
       }),
       providesTags: ['TicketMessages'],
     }),
+
+    /**
+     * AUDIT LOGS
+     */
+
+    // FETCH AUDIT LOGS
+    fetchEntityHistory: builder.query({
+      query: ({ entityId, entityType, page, size }) => ({
+        url: `/audit-logs/entity/${entityId}`,
+        params: { entityType, page, size },
+      }),
+    }),
   }),
 });
 
@@ -72,4 +84,5 @@ export const {
   useLazyFetchTicketsQuery,
   useLazyGetTicketByIdQuery,
   useLazyFetchTicketMessagesQuery,
+  useLazyFetchEntityHistoryQuery,
 } = apiQuerySlice;

@@ -122,7 +122,6 @@ const CreateTicketPage = () => {
                 <Controller
                   name="category"
                   control={control}
-                  rules={{ required: `Please select category` }}
                   render={({ field }) => (
                     <Select
                       isLoading={categoriesIsFetching}
@@ -143,8 +142,6 @@ const CreateTicketPage = () => {
                 rules={{ required: `Message is required` }}
                 render={({ field }) => (
                   <TextArea
-                    rows={100}
-                    height="300"
                     resize
                     errorMessage={errors.message?.message}
                     label="Message"

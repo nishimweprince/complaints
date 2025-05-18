@@ -6,17 +6,22 @@ import {
 } from '@/usecases/ticket-messages/ticketMessage.hooks';
 import { useGetTicketById } from '@/usecases/tickets/ticket.hooks';
 import { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { TicketMessage } from '@/types/ticketMessage.type';
 import { Ticket } from '@/types/ticket.type';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
-import { capitalizeString, formatDate } from '@/helpers/strings.helper';
+import { faArrowUp, faHistory } from '@fortawesome/free-solid-svg-icons';
+import {
+  capitalizeString,
+  formatDate,
+  getStatusBackgroundColor,
+} from '@/helpers/strings.helper';
 import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
 import { Controller, useForm } from 'react-hook-form';
 import TextArea from '@/components/inputs/TextArea';
 import CustomTooltip from '@/components/custom/CustomTooltip';
 import Loader from '@/components/inputs/Loader';
+import Button from '@/components/inputs/Button';
 
 const Message = ({
   message,
@@ -75,59 +80,46 @@ const Message = ({
 
 // Ticket status badge component
 const StatusBadge = ({ status }: { status: string }) => {
-  const getStatusStyles = () => {
-    switch (status) {
-      case 'OPEN':
-        return 'bg-green-100 text-green-800 border-green-200';
-      case 'CLOSED':
-        return 'bg-gray-100 text-gray-800 border-gray-200';
-      case 'PENDING':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'URGENT':
-        return 'bg-red-100 text-red-800 border-red-200';
-      default:
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-    }
-  };
-
   return (
     <span
-      className={`px-3 py-1.5 rounded-full text-sm font-medium flex items-center gap-1 border ${getStatusStyles()}`}
+      className={`font-normal flex items-center gap-1 border ${getStatusBackgroundColor(
+        status
+      )}`}
     >
       <span className={`w-2 h-2 rounded-full bg-current`}></span>
-      {status}
+      {capitalizeString(status)}
     </span>
   );
 };
 
 // Ticket priority badge component
-const PriorityBadge = ({ priority }: { priority: string }) => {
+export const PriorityBadge = ({ priority }: { priority: string }) => {
   const getPriorityStyles = () => {
     switch (priority) {
       case 'LOW':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
+        return 'bg-emerald-50 text-emerald-700 border-emerald-200';
       case 'MEDIUM':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+        return 'bg-amber-50 text-amber-700 border-amber-200';
       case 'HIGH':
-        return 'bg-orange-100 text-orange-800 border-orange-200';
+        return 'bg-rose-50 text-rose-700 border-rose-200';
       case 'CRITICAL':
-        return 'bg-red-100 text-red-800 border-red-200';
+        return 'bg-red-50 text-red-700 border-red-200';
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return 'bg-slate-50 text-slate-700 border-slate-200';
     }
   };
 
   return (
     <span
-      className={`px-3 py-1.5 rounded-full text-sm font-medium border ${getPriorityStyles()}`}
+      className={`font-normal flex items-center gap-1 border text-center justify-center text-[13px] rounded-lg px-3 ${getPriorityStyles()}`}
     >
-      {priority}
+      {capitalizeString(priority)}
     </span>
   );
 };
 
 // Ticket details component
-const TicketDetails = ({ ticket }: { ticket: Ticket }) => {
+export const TicketDetails = ({ ticket }: { ticket: Ticket }) => {
   return (
     <article className="bg-white rounded-lg shadow-sm overflow-hidden mb-4">
       <header className="border-b border-gray-100 p-3">
@@ -156,6 +148,16 @@ const TicketDetails = ({ ticket }: { ticket: Ticket }) => {
             className="text-xs text-gray-500"
           >
             {ticket?.assignedInstitution?.name}
+          </Link>
+          <Link
+            to={`/tickets/${ticket.id}/history`}
+            className="mt-4 px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg text-sm font-medium transition-colors w-fit flex items-center gap-2"
+          >
+            <FontAwesomeIcon
+              icon={faHistory}
+              className="w-4 h-4 text-primary"
+            />
+            View History
           </Link>
         </blockquote>
 
@@ -193,6 +195,7 @@ const TicketDetailsPage = () => {
    * NAVIGATION
    */
   const { id } = useParams();
+  const navigate = useNavigate();
 
   /**
    * USE CASES
@@ -251,8 +254,11 @@ const TicketDetailsPage = () => {
       reset({
         message: '',
       });
+      if (id) {
+        getTicketById(id);
+      }
     }
-  }, [createTicketMessageIsSuccess, reset]);
+  }, [createTicketMessageIsSuccess, getTicketById, id, reset]);
 
   return (
     <AppLayout>
@@ -266,13 +272,24 @@ const TicketDetailsPage = () => {
         ) : null}
 
         <section className="bg-white rounded-lg shadow-sm flex-1 flex flex-col min-h-0">
-          <section className="flex-1 overflow-y-auto">
+          <section
+            className="flex-1 overflow-y-auto"
+            ref={(el) => {
+              if (
+                el &&
+                !ticketMessagesIsFetching &&
+                ticketMessagesList.length > 0
+              ) {
+                el.scrollTop = el.scrollHeight;
+              }
+            }}
+          >
             {ticketMessagesIsFetching ? (
               <section className="p-4 animate-pulse flex justify-center">
                 <p>Loading messages...</p>
               </section>
             ) : ticketMessagesList.length > 0 ? (
-              <section className="p-4">
+              <menu className="p-4">
                 {ticketMessagesList.map((message) => (
                   <Message
                     key={message.id}
@@ -280,7 +297,7 @@ const TicketDetailsPage = () => {
                     isOwnMessage={message.createdById === currentUserId}
                   />
                 ))}
-              </section>
+              </menu>
             ) : (
               <section className="p-4 text-center text-gray-500">
                 <p>No messages to display</p>
@@ -320,6 +337,17 @@ const TicketDetailsPage = () => {
             </CustomTooltip>
           </form>
         </section>
+        <menu className="w-full flex items-center gap-4 justify-between mt-4">
+          <Button
+            variant="secondary"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate('/tickets');
+            }}
+          >
+            Back
+          </Button>
+        </menu>
       </main>
     </AppLayout>
   );
