@@ -91,14 +91,14 @@ const PublicNavbar = () => {
                   </section>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer">
-                  <Link to={`/auth/login`} className="flex items-center gap-2">
+                <DropdownMenuItem asChild>
+                  <Link to={`/auth/login`} className="flex items-center gap-2 w-full cursor-pointer">
                     <UserCircle className="h-4 w-4" />
                     <span>Citizen Login</span>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
-                  <Link to={`/auth/login`} className="flex items-center gap-2">
+                <DropdownMenuItem asChild>
+                  <Link to={`/auth/login`} className="flex items-center gap-2 w-full cursor-pointer">
                     <svg
                       className="h-4 w-4"
                       fill="none"
@@ -115,8 +115,8 @@ const PublicNavbar = () => {
                     <span>Agency Login</span>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
-                  <Link to={`/auth/login`} className="flex items-center gap-2">
+                <DropdownMenuItem asChild>
+                  <Link to={`/auth/login`} className="flex items-center gap-2 w-full cursor-pointer">
                     <svg
                       className="h-4 w-4"
                       fill="none"
@@ -134,8 +134,8 @@ const PublicNavbar = () => {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer text-primary">
-                  <Link to={`/auth/login`} className="flex items-center gap-2">
+                <DropdownMenuItem asChild className="text-primary">
+                  <Link to={`/auth/login`} className="flex items-center gap-2 w-full cursor-pointer">
                     <svg
                       className="h-4 w-4"
                       fill="none"

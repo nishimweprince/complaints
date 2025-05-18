@@ -9,7 +9,7 @@ import {
   faChevronDown,
   faChevronUp,
 } from '@fortawesome/free-solid-svg-icons';
-import { SIDEBAR_NAV_ITEMS } from '@/constants/sidebar.constants';
+import { useSidebarNavItems } from '@/constants/sidebar.constants';
 import { setIsOpen } from '@/states/slices/sidebarSlice';
 
 const Sidebar = () => {
@@ -17,7 +17,7 @@ const Sidebar = () => {
   const dispatch: AppDispatch = useDispatch();
   const { isOpen } = useSelector((state: RootState) => state.sidebar);
   const [openCategories, setOpenCategories] = useState<string[]>([]);
-
+  const SIDEBAR_NAV_ITEMS = useSidebarNavItems();
   const controlText = useAnimation();
 
   const showMore = useCallback(() => {
@@ -90,7 +90,7 @@ const Sidebar = () => {
           isOpen ? '' : 'overflow-hidden'
         }`}
       >
-        {SIDEBAR_NAV_ITEMS.map((nav, index) => {
+        {SIDEBAR_NAV_ITEMS.filter((nav) => nav.condition !== false).map((nav, index) => {
           const selected = pathname.includes(nav.path);
           const subcategoriesIsOpen = openCategories.includes(nav.title);
           const isSubcategoryActive = nav.subcategories?.some((sub) =>
@@ -155,36 +155,38 @@ const Sidebar = () => {
                   transition={{ duration: 0.2, ease: 'easeInOut' }}
                   className="pl-4 pr-4 w-full flex flex-col gap-1 my-2"
                 >
-                  {nav.subcategories.map((sub, subIndex) => {
-                    const isSubLinkActive = pathname.startsWith(sub.path);
-                    return (
-                      <li key={subIndex}>
-                        <Link
-                          to={sub.path}
-                          className={`flex items-center w-full gap-3 px-4 py-3 font-medium text-xs ease-in-out duration-200 rounded-md 
+                  {nav.subcategories
+                    .filter((sub) => sub.condition !== false)
+                    .map((sub, subIndex) => {
+                      const isSubLinkActive = pathname.startsWith(sub.path);
+                      return (
+                        <li key={subIndex}>
+                          <Link
+                            to={sub.path}
+                            className={`flex items-center w-full gap-3 px-4 py-3 font-medium text-xs ease-in-out duration-200 rounded-md 
                                       hover:bg-primary/5 hover:text-primary
                                       ${
                                         isSubLinkActive
                                           ? 'bg-primary/10 text-primary font-semibold'
                                           : 'text-gray-600'
                                       }`}
-                        >
-                          <FontAwesomeIcon
-                            icon={sub?.icon}
-                            className={`text-base ${
-                              isSubLinkActive ? 'text-primary' : 'text-gray-500'
-                            }`}
-                          />
-                          <motion.span
-                            animate={isOpen ? controlText : { opacity: 0 }}
-                            className="font-medium whitespace-nowrap"
                           >
-                            {sub.title}
-                          </motion.span>
-                        </Link>
-                      </li>
-                    );
-                  })}
+                            <FontAwesomeIcon
+                              icon={sub?.icon}
+                              className={`text-base ${
+                                isSubLinkActive ? 'text-primary' : 'text-gray-500'
+                              }`}
+                            />
+                            <motion.span
+                              animate={isOpen ? controlText : { opacity: 0 }}
+                              className="font-medium whitespace-nowrap"
+                            >
+                              {sub.title}
+                            </motion.span>
+                          </Link>
+                        </li>
+                      );
+                    })}
                 </motion.ul>
               )}
             </li>

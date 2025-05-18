@@ -8,6 +8,7 @@ import AuthenticatedRoutes from './AuthenticatedRoutes';
 import CreateTicketPage from '@/pages/tickets/CreateTicketPage';
 import TicketDetailsPage from '@/pages/tickets/TicketDetailsPage';
 import TicketHistoryPage from '@/pages/tickets/TicketHistoryPage';
+import Signup from '@/pages/auth/Signup';
 
 const Router = () => {
   return (
@@ -19,6 +20,7 @@ const Router = () => {
        */}
       <Route path="/auth">
         <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
       </Route>
 
       {/**

@@ -19,6 +19,15 @@ export const apiSlice = createApi({
       }),
     }),
 
+    // SIGNUP
+    signup: builder.mutation({
+      query: ({ username, password, phoneNumber }) => ({
+        url: "/auth/signup",
+        method: "POST",
+        body: { username, password, phoneNumber },
+      }),
+    }),
+
     /**
      * INSTITUTIONS
      */
@@ -62,6 +71,7 @@ export const apiSlice = createApi({
 
 export const {
   useLoginMutation,
+  useSignupMutation,
   useCreateInstitutionMutation,
   useCreateTicketMutation,
   useCreateTicketMessageMutation,
