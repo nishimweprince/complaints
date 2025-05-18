@@ -4,14 +4,13 @@ import { PermissionNames } from "@/constants/permission.constants";
 import InstitutionAdminDashboard from "./InstitutionAdminDashboard";
 import AppLayout from "@/containers/navigation/AppLayout";
 import { Heading } from "@/components/inputs/TextInputs";
+import CitizenDashboard from "./CitizenDashboard";
 
 const Dashboard = () => {
   /**
    * STATE VARIABLES
    */
   const { permissions, user } = useAppSelector((state) => state.auth);
-
-  console.log(user);
 
   /**
    * SWITCH DASHBOARD
@@ -25,6 +24,11 @@ const Dashboard = () => {
   // SUPER ADMIN DASHBOARD
   if (permissions?.length === Object.values(PermissionNames).length) {
     return <SuperAdminDashboard />;
+  }
+
+  // CITIZEN DASHBOARD
+  if (permissions?.length <= 0) {
+    return <CitizenDashboard />
   }
 
   return (

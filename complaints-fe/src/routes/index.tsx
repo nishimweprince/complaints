@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "@/pages/common/Home";
+import LandingPage from "@/pages/common/LandingPage";
 import Login from "@/pages/auth/Login";
 import Dashboard from "@/pages/dashboard";
 import InstitutionsPage from "@/pages/institutions/InstitutionsPage";
@@ -7,7 +7,7 @@ import InstitutionsPage from "@/pages/institutions/InstitutionsPage";
 const Router = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<LandingPage />} />
 
       {/**
        * AUTH ROUTES

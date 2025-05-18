@@ -217,7 +217,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               inputMode={inputMode}
               pattern={pattern}
               className={`
-                py-[7px] px-4 
+                !py-[12px] px-4 
                 font-normal
                 placeholder:!font-light
                 placeholder:text-[13px] 
@@ -240,7 +240,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               `}
             />
           )}
-          {errorMessage && <InputErrorMessage className="mt-1" message={errorMessage} />}
+          {errorMessage && (
+            <InputErrorMessage className="mt-1" message={errorMessage} />
+          )}
         </fieldset>
       </label>
     );

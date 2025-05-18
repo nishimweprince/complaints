@@ -133,8 +133,7 @@ const Navbar = ({ className }: Props) => {
                   e.preventDefault();
                   if (nav?.title === "Logout") {
                     dispatch(setLogout());
-                    navigate("/auth/login");
-                    window.location.reload();
+                    window.location.href = "/auth/login";
                   }
                   navigate(`${nav?.link}`);
                   setIsOpen(false);
@@ -214,8 +213,7 @@ const Navbar = ({ className }: Props) => {
                         setIsMobileMenuOpen(false);
                         if (nav?.title === "Logout") {
                           dispatch(setLogout());
-                          navigate("/auth/login");
-                          window.location.reload();
+                          window.location.href = "/auth/login";
                         }
                         navigate(`${nav?.link}`);
                       }}
