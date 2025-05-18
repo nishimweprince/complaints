@@ -64,9 +64,9 @@ const PublicNavbar = () => {
             </menu>
           </nav>
           <aside className="flex items-center gap-4">
-            <Button className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200 hover:shadow-lg hover:shadow-primary/20">
+            <Link to={`/tickets/create`} className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200 hover:shadow-lg hover:shadow-primary/20">
               Submit Complaint
-            </Button>
+            </Link>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

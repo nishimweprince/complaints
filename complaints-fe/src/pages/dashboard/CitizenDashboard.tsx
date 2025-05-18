@@ -1,9 +1,7 @@
-import React from 'react'
+import AppLayout from "@/containers/navigation/AppLayout";
 
 const CitizenDashboard = () => {
-  return (
-    <div>CitizenDashboard</div>
-  )
-}
+  return <AppLayout>CitizenDashboard</AppLayout>;
+};
 
 export default CitizenDashboard;

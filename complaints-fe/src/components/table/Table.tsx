@@ -48,7 +48,7 @@ export default function Table<TData, TValue>({
   data = [],
   rowClickHandler = undefined,
   showPagination = true,
-  page = 1,
+  page = 0,
   size = 5,
   totalCount = 0,
   totalPages = 1,

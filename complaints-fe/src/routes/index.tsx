@@ -3,6 +3,10 @@ import LandingPage from "@/pages/common/LandingPage";
 import Login from "@/pages/auth/Login";
 import Dashboard from "@/pages/dashboard";
 import InstitutionsPage from "@/pages/institutions/InstitutionsPage";
+import TicketsPage from "@/pages/tickets/TicketsPage";
+import AuthenticatedRoutes from "./AuthenticatedRoutes";
+import CreateTicketPage from "@/pages/tickets/CreateTicketPage";
+import TicketDetailsPage from "@/pages/tickets/TicketDetailsPage";
 
 const Router = () => {
   return (
@@ -17,15 +21,29 @@ const Router = () => {
       </Route>
 
       {/**
-       * DASHBOARD ROUTES
+       * AUTHENTICATED ROUTES
        */}
-      <Route path="/dashboard" element={<Dashboard />} />
+      <Route element={<AuthenticatedRoutes />}>
+        {/**
+         * DASHBOARD ROUTES
+         */}
+        <Route path="/dashboard" element={<Dashboard />} />
 
-      {/**
-       * INSTITUTIONS ROUTES
-       */}
-      <Route path="/institutions">
-        <Route path="" element={<InstitutionsPage />} />
+        {/**
+         * INSTITUTIONS ROUTES
+         */}
+        <Route path="/institutions">
+          <Route path="" element={<InstitutionsPage />} />
+        </Route>
+
+        {/**
+         * TICKETS ROUTES
+         */}
+        <Route path="/tickets">
+          <Route path="" element={<TicketsPage />} />
+          <Route path="create" element={<CreateTicketPage />} />
+          <Route path=":id" element={<TicketDetailsPage />} />
+        </Route>
       </Route>
     </Routes>
   );

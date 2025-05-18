@@ -30,9 +30,7 @@ const authSlice = createSlice({
     setLogout: (state) => {
       state.user = undefined;
       state.token = undefined;
-      localStorageAdapter.removeItem("user");
-      localStorageAdapter.removeItem("token");
-      localStorageAdapter.removeItem("permissions");
+      localStorageAdapter.clear();
     },
     setPermissions: (state, action) => {
       state.permissions = action.payload;

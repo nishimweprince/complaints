@@ -5,6 +5,8 @@ import sidebarSlice from "./slices/sidebarSlice";
 import { apiQuerySlice } from "@/api/queies/apiQuerySlice";
 import institutionSlice from "./slices/institutionSlice";
 import categorySlice from "./slices/categorySlice";
+import ticketSlice from "./slices/ticketSlice";
+import ticketMessageSlice from "./slices/ticketMessageSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +14,8 @@ export const store = configureStore({
     sidebar: sidebarSlice,
     institution: institutionSlice,
     category: categorySlice,
+    ticket: ticketSlice,
+    ticketMessage: ticketMessageSlice,
     [apiSlice.reducerPath]: apiSlice.reducer,
     [apiQuerySlice.reducerPath]: apiQuerySlice.reducer,
   },

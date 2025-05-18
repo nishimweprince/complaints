@@ -119,7 +119,7 @@ export function DataTablePagination<TData>({
         </section>
 
         <section className="flex items-center text-sm font-medium">
-          <p className="text-[15px]">
+          <p className="text-[13px]">
             Page {page + 1} of {totalPages || 1}
           </p>
         </section>
@@ -129,7 +129,7 @@ export function DataTablePagination<TData>({
             type="number"
             min={1}
             max={totalPages}
-            className="w-12 text-center placeholder:text-[15px] text-[15px] py-1 px-2 border border-[#E5E5E5] rounded-md"
+            className="w-12 text-center placeholder:text-[13px] text-[13px] py-1 px-2 border border-[#E5E5E5] rounded-md"
             onChange={(e) => {
               e.preventDefault();
               const value = Number(e.target.value);

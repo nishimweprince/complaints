@@ -1,6 +1,11 @@
 import { FC, ChangeEvent, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Textarea } from "../ui/textarea";
+import { InputErrorMessage } from "./ErrorLabels";
+import { FieldValues } from "react-hook-form";
+import { Merge } from "react-hook-form";
+import { FieldErrorsImpl } from "react-hook-form";
+import { FieldError } from "react-hook-form";
 
 interface TextAreaProps {
   cols?: number;
@@ -16,7 +21,11 @@ interface TextAreaProps {
   label?: string | React.ReactNode;
   value?: string | number | readonly string[] | undefined;
   height?: string;
-}
+  errorMessage?:
+    | string
+    | FieldError
+    | Merge<FieldError, FieldErrorsImpl<FieldValues>>
+    | undefined;}
 
 const TextArea: FC<TextAreaProps> = ({
   cols = 50,
@@ -32,6 +41,7 @@ const TextArea: FC<TextAreaProps> = ({
   onBlur,
   label = null,
   value,
+  errorMessage,
 }) => {
   const ref = useRef<HTMLTextAreaElement>(null);
 
@@ -40,6 +50,8 @@ const TextArea: FC<TextAreaProps> = ({
       ref.current.value = "";
     }
   }, [defaultValue, value]);
+
+  const heightValue = height.replace("px", "");
 
   return (
     <label className="grid w-full gap-1.5">
@@ -59,7 +71,7 @@ const TextArea: FC<TextAreaProps> = ({
         readOnly={readonly}
         placeholder={placeholder}
         className={cn(
-          `w-full h-[${height}]`,
+          `w-full h-[${heightValue}px]`,
           !resize && "resize-none",
           className
         )}
@@ -67,6 +79,7 @@ const TextArea: FC<TextAreaProps> = ({
         onBlur={onBlur}
         defaultValue={defaultValue}
       />
+      {errorMessage && <InputErrorMessage message={errorMessage} />}
     </label>
   );
 };
