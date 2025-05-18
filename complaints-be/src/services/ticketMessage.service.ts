@@ -11,12 +11,19 @@ import {
 import { AuditDelete } from '../decorators/auditLog.decorator';
 import { AuditLogEntityTypes } from '../constants/auditLog.constants';
 import { ForbiddenError, NotFoundError } from '../helpers/errors.helper';
+import { Ticket } from '../entities/ticket.entity';
+import { TicketStatus } from '../constants/ticket.constants';
+import { TicketService } from './ticket.service';
 
 export class TicketMessageService {
   private ticketMessageRepository: Repository<TicketMessage>;
+  private ticketRepository: Repository<Ticket>;
+  private ticketService: TicketService;
 
   constructor() {
     this.ticketMessageRepository = AppDataSource.getRepository(TicketMessage);
+    this.ticketRepository = AppDataSource.getRepository(Ticket);
+    this.ticketService = new TicketService();
   }
 
   /**
@@ -98,8 +105,50 @@ export class TicketMessageService {
    * CREATE TICKET MESSAGE
    */
   async createTicketMessage(
-    ticketMessage: Partial<TicketMessage>,
+    ticketMessage: Partial<TicketMessage>
   ): Promise<TicketMessage> {
+    // CHECK IF TICKET EXISTS
+    const ticketExists = await this.ticketRepository.findOne({
+      where: { id: ticketMessage.ticketId },
+      relations: {
+        assignedInstitution: true,
+        assignedUser: true,
+        createdBy: true,
+      },
+    });
+
+    if (!ticketExists) {
+      throw new NotFoundError('Ticket not found', {
+        referenceId: ticketMessage?.ticketId,
+      });
+    }
+
+    if (
+      ['CLOSED', 'ANSWERED'].includes(ticketExists?.status) &&
+      ticketMessage?.createdById === ticketExists?.createdById
+    ) {
+      ticketExists.status = TicketStatus.REOPENED;
+    } else if (ticketExists?.assignedUser?.id !== ticketMessage.createdById) {
+      ticketExists.status = TicketStatus.ANSWERED;
+
+      if (
+        !ticketExists?.assignedUser?.institutionId &&
+        ticketMessage?.createdById
+      ) {
+        ticketExists.assignedUserId = ticketMessage?.createdById;
+      }
+    }
+
+    // UPDATE TICKET STATUS
+    await this.ticketService.updateTicket({
+      id: ticketExists.id,
+      ticket: {
+        ...ticketExists,
+      },
+      metadata: { createdById: ticketMessage?.createdById as UUID },
+    });
+
+    // CREATE TICKET MESSAGE
     return this.ticketMessageRepository.save(ticketMessage);
   }
 }
