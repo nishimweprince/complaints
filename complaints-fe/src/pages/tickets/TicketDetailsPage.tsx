@@ -1,6 +1,9 @@
 import AppLayout from '@/containers/navigation/AppLayout';
 import { useAppSelector } from '@/states/hooks';
-import { useFetchTicketMessages } from '@/usecases/ticket-messages/ticketMessage.hooks';
+import {
+  useCreateTicketMessage,
+  useFetchTicketMessages,
+} from '@/usecases/ticket-messages/ticketMessage.hooks';
 import { useGetTicketById } from '@/usecases/tickets/ticket.hooks';
 import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -13,6 +16,7 @@ import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
 import { Controller, useForm } from 'react-hook-form';
 import TextArea from '@/components/inputs/TextArea';
 import CustomTooltip from '@/components/custom/CustomTooltip';
+import Loader from '@/components/inputs/Loader';
 
 const Message = ({
   message,
@@ -21,6 +25,11 @@ const Message = ({
   message: TicketMessage;
   isOwnMessage: boolean;
 }) => {
+  // STATE VARIABLES
+  const { user } = useAppSelector((state) => state.auth);
+
+  const createdBy = message?.createdBy || user;
+
   return (
     <article
       className={`flex ${
@@ -52,7 +61,7 @@ const Message = ({
             className="w-4 h-4 text-gray-400"
           />
           <span className="text-xs text-gray-500">
-            {message?.createdBy?.name || message?.createdBy?.email}
+            {createdBy?.name || createdBy?.email}
           </span>
           <span className="text-gray-300">•</span>
           <time className="text-xs text-gray-500">
@@ -189,6 +198,13 @@ const TicketDetailsPage = () => {
    * USE CASES
    */
 
+  // CREATE TICKET MESSAGE
+  const {
+    createTicketMessage,
+    createTicketMessageIsSuccess,
+    createTicketMessageIsLoading,
+  } = useCreateTicketMessage();
+
   // FETCH TICKET MESSAGES
   const { fetchTicketMessages, ticketMessagesIsFetching, page, size } =
     useFetchTicketMessages();
@@ -217,12 +233,26 @@ const TicketDetailsPage = () => {
   /**
    * REACT HOOK FORM
    */
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, reset } = useForm();
 
   // HANDLE FORM SUBMISSION
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
+    if (data?.message) {
+      createTicketMessage({
+        message: data?.message,
+        ticketId: id,
+      });
+    }
   });
+
+  // HANDLE CREATE MESSAGE IS SUCCESS
+  useEffect(() => {
+    if (createTicketMessageIsSuccess) {
+      reset({
+        message: '',
+      });
+    }
+  }, [createTicketMessageIsSuccess, reset]);
 
   return (
     <AppLayout>
@@ -277,11 +307,15 @@ const TicketDetailsPage = () => {
             </fieldset>
             <CustomTooltip label="Click to send message">
               <button type="submit">
-                <FontAwesomeIcon
-                  icon={faArrowUp}
-                  size="lg"
-                  className="w-8 h-8 cursor-pointer shadow-sm hover:shadow-lg bg-primary text-white p-[.5px] py-2 rounded-full flex items-center justify-center"
-                />
+                {createTicketMessageIsLoading ? (
+                  <Loader className="text-primary" />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faArrowUp}
+                    size="lg"
+                    className="w-8 h-8 cursor-pointer shadow-sm hover:shadow-lg bg-primary text-white p-[.5px] py-2 rounded-full flex items-center justify-center"
+                  />
+                )}
               </button>
             </CustomTooltip>
           </form>

@@ -44,6 +44,19 @@ export const apiSlice = createApi({
         body: data,
       }),
     }),
+
+    /**
+     * TICKET MESSAGES
+     */
+
+    // CREATE TICKET MESSAGE
+    createTicketMessage: builder.mutation({
+      query: (data) => ({
+        url: "/ticket-messages",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -51,4 +64,5 @@ export const {
   useLoginMutation,
   useCreateInstitutionMutation,
   useCreateTicketMutation,
+  useCreateTicketMessageMutation,
 } = apiSlice;

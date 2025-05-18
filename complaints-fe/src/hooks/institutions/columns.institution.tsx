@@ -1,30 +1,30 @@
-import CustomPopover from "@/components/custom/CustomPopover";
+import CustomPopover from '@/components/custom/CustomPopover';
 import {
   ellipsisHClassName,
   tableActionClassName,
-} from "@/constants/inputs.constants";
-import { capitalizeString, formatDate } from "@/helpers/strings.helper";
-import { Institution } from "@/types/institution.type";
-import { faCircleInfo, faEllipsisH } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ColumnDef } from "@tanstack/react-table";
-import { useMemo } from "react";
-import { Link } from "react-router-dom";
+} from '@/constants/inputs.constants';
+import { capitalizeString, formatDate } from '@/helpers/strings.helper';
+import { Institution } from '@/types/institution.type';
+import { faCircleInfo, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ColumnDef } from '@tanstack/react-table';
+import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 
 export const useInstitutionColumns = () => {
   const institutionColumns: ColumnDef<Institution>[] = useMemo(() => {
     return [
       {
-        header: "Name",
-        accessorKey: "name",
+        header: 'Name',
+        accessorKey: 'name',
       },
       {
-        header: "Description",
-        accessorKey: "description",
+        header: 'Description',
+        accessorKey: 'description',
       },
       {
-        header: "Categories",
-        accessorKey: "categories",
+        header: 'Categories',
+        accessorKey: 'categories',
         cell: ({ row }) => {
           return (
             <ul className="flex flex-wrap gap-2">
@@ -43,14 +43,14 @@ export const useInstitutionColumns = () => {
         },
       },
       {
-        header: "Date added",
-        accessorKey: "createdAt",
+        header: 'Date added',
+        accessorKey: 'createdAt',
         cell: ({ row }) =>
-          formatDate(row?.original?.createdAt, "DD/MM/YYYY HH:mm"),
+          formatDate(row?.original?.createdAt, 'DD/MM/YYYY HH:mm'),
       },
       {
-        header: "",
-        accessorKey: "actions",
+        header: '',
+        accessorKey: 'actions',
         cell: ({ row }) => {
           return (
             <CustomPopover

@@ -1,18 +1,18 @@
-import Button from "@/components/inputs/Button";
-import Combobox from "@/components/inputs/Combobox";
-import Input from "@/components/inputs/Input";
-import Select from "@/components/inputs/Select";
-import TextArea from "@/components/inputs/TextArea";
-import { Heading } from "@/components/inputs/TextInputs";
-import { TicketPriority } from "@/constants/ticket.constants";
-import AppLayout from "@/containers/navigation/AppLayout";
-import { capitalizeString } from "@/helpers/strings.helper";
-import { useAppSelector } from "@/states/hooks";
-import { useFetchCategories } from "@/usecases/categories/category.hooks";
-import { useFetchInstitutions } from "@/usecases/institutions/institution.hooks";
-import { useCreateTicket } from "@/usecases/tickets/ticket.hooks";
-import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import Button from '@/components/inputs/Button';
+import Combobox from '@/components/inputs/Combobox';
+import Input from '@/components/inputs/Input';
+import Select from '@/components/inputs/Select';
+import TextArea from '@/components/inputs/TextArea';
+import { Heading } from '@/components/inputs/TextInputs';
+import { TicketPriority } from '@/constants/ticket.constants';
+import AppLayout from '@/containers/navigation/AppLayout';
+import { capitalizeString } from '@/helpers/strings.helper';
+import { useAppSelector } from '@/states/hooks';
+import { useFetchCategories } from '@/usecases/categories/category.hooks';
+import { useFetchInstitutions } from '@/usecases/institutions/institution.hooks';
+import { useCreateTicket } from '@/usecases/tickets/ticket.hooks';
+import { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
 
 const CreateTicketPage = () => {
   /**
@@ -154,18 +154,21 @@ const CreateTicketPage = () => {
                   />
                 )}
               />
-              <Controller name="assignedInstitutionId" control={control} render={({ field }) => (
-                <Combobox
-                  options={institutionsList?.map((institution) => ({
-                    label: capitalizeString(institution?.name),
-                    value: institution?.id,
-                  }))}
-                  {...field}
-                  label="Institution"
-                  placeholder="Select institution"
-                  isLoading={institutionsIsFetching}
-                />
-              )}
+              <Controller
+                name="assignedInstitutionId"
+                control={control}
+                render={({ field }) => (
+                  <Combobox
+                    options={institutionsList?.map((institution) => ({
+                      label: capitalizeString(institution?.name),
+                      value: institution?.id,
+                    }))}
+                    {...field}
+                    label="Institution"
+                    placeholder="Select institution"
+                    isLoading={institutionsIsFetching}
+                  />
+                )}
               />
             </fieldset>
             <Button

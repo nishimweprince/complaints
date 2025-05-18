@@ -1,9 +1,13 @@
+import { useCreateTicketMessageMutation } from '@/api/mutations/apiSlice';
 import { useLazyFetchTicketMessagesQuery } from '@/api/queies/apiQuerySlice';
 import { usePagination } from '@/hooks/common/pagination.hooks';
 import { useAppDispatch } from '@/states/hooks';
-import { setTicketMessagesList } from '@/states/slices/ticketMessageSlice';
+import { setAddToTicketMessagesList, setTicketMessagesList } from '@/states/slices/ticketMessageSlice';
 import { useEffect } from 'react';
 
+/**
+ * FETCH TICKET MESSAGES
+ */
 export const useFetchTicketMessages = () => {
   /**
    * STATE VARIABLES
@@ -52,5 +56,41 @@ export const useFetchTicketMessages = () => {
     setSize,
     setTotalCount,
     setTotalPages,
+  };
+};
+
+/**
+ * CREATE TICKET MESSAGE
+ */
+export const useCreateTicketMessage = () => {
+
+  /**
+   * STATE VARIABLES
+   */
+  const dispatch = useAppDispatch();
+
+  const [
+    createTicketMessage,
+    {
+      isLoading: createTicketMessageIsLoading,
+      isError: createTicketMessageIsError,
+      isSuccess: createTicketMessageIsSuccess,
+      reset: createTicketMessageReset,
+      data: ticketMessageData
+    },
+  ] = useCreateTicketMessageMutation();
+
+  useEffect(() => {
+    if (createTicketMessageIsSuccess) {
+      dispatch(setAddToTicketMessagesList(ticketMessageData?.data));
+    }
+  }, [createTicketMessageIsSuccess, dispatch, ticketMessageData?.data]);
+
+  return {
+    createTicketMessage,
+    createTicketMessageIsLoading,
+    createTicketMessageIsError,
+    createTicketMessageIsSuccess,
+    createTicketMessageReset,
   };
 };

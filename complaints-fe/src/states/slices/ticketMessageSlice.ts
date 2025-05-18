@@ -26,6 +26,9 @@ const ticketMessageSlice = createSlice({
     setTicketMessage: (state, action) => {
       state.ticketMessage = action.payload;
     },
+    setAddToTicketMessagesList: (state, action) => {
+      state.ticketMessagesList.push(action.payload);
+    },
   },
 });
 
@@ -33,6 +36,7 @@ export const {
   setTicketMessagesList,
   setSelectedTicketMessage,
   setTicketMessage,
-} = ticketMessageSlice.actions;
+  setAddToTicketMessagesList,
+  } = ticketMessageSlice.actions;
 
 export default ticketMessageSlice.reducer;
