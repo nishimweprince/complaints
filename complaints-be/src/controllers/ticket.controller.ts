@@ -12,10 +12,14 @@ export class TicketController {
    */
   async createTicket(req: Request, res: Response, next: NextFunction) {
     try {
+      const { user } = req as AuthenticatedRequest;
       const { ticket, ticketMessage } = req.body;
 
       const createdTicket = await ticketService.createTicket({
-        ticket,
+        ticket: {
+          ...ticket,
+          createdById: user?.id,
+        },
         ticketMessage,
       });
 
@@ -61,6 +65,24 @@ export class TicketController {
       return res.status(200).json({
         message: "Ticket deleted successfully",
         data: ticket,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * FETCH TICKETS
+   */
+  async fetchTickets(req: Request, res: Response, next: NextFunction) {
+    try {
+      const tickets = await ticketService.fetchTickets({
+        params: req.query,
+      });
+
+      return res.status(200).json({
+        message: "Tickets fetched successfully",
+        data: tickets,
       });
     } catch (error) {
       next(error);

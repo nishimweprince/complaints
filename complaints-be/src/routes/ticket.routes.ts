@@ -8,12 +8,15 @@ const ticketController = new TicketController();
 const ticketRoutes = Router();
 
 // CREATE TICKET
-ticketRoutes.post("/", ticketController.createTicket);
+ticketRoutes.post("/", authMiddleware, ticketController.createTicket);
 
 // GET TICKET
 ticketRoutes.get("/:id", ticketController.getTicket);
 
 // DELETE TICKET
 ticketRoutes.delete("/:id", authMiddleware, ticketController.deleteTicket);
+
+// FETCH TICKETS
+ticketRoutes.get('/', ticketController.fetchTickets);
 
 export default ticketRoutes;

@@ -2,9 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import { JwtPayload } from "jsonwebtoken";
 import jwt from "jsonwebtoken";
 import { User } from "../entities/user.entity";
+import { PermissionNames } from "../constants/permission.constants";
 
 interface AuthenticationRequest extends Request {
   user: User | JwtPayload | undefined;
+  permissions: PermissionNames[] | undefined;
 }
 
 export const authMiddleware = (
@@ -21,10 +23,19 @@ export const authMiddleware = (
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
 
-    (req as AuthenticationRequest).user = decoded as
+    (req as AuthenticationRequest).user = (decoded as {
+      user: User;
+      permissions: PermissionNames[];
+    })?.user as
       | User
       | JwtPayload
       | undefined;
+
+    (req as AuthenticationRequest).permissions =
+      (decoded as {
+        user: User;
+        permissions: PermissionNames[];
+      })?.permissions as PermissionNames[] | undefined;
     next();
   } catch (error) {
     return res.status(401).json({ message: "Invalid token" });

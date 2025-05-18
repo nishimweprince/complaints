@@ -33,7 +33,6 @@ export class TicketService {
     ticket: Partial<Ticket>;
     ticketMessage: Partial<TicketMessage>;
   }): Promise<Ticket> {
-    // CREATE TICKET
 
     // GENERATE REFERENCE ID
     let referenceId = generateReferenceID('T', 5);

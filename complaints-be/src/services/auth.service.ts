@@ -93,7 +93,10 @@ export class AuthService {
 
     const token = jwt.sign(
       {
-        userId: userExists.id,
+        user: {
+          id: userExists?.id,
+          institutionId: userExists?.institution?.id,
+        },
         permissions,
       },
       process.env.JWT_SECRET || ""
