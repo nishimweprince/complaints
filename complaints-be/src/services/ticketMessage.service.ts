@@ -8,6 +8,9 @@ import {
   getPagingData,
   Pagination,
 } from '../helpers/pagination.helper';
+import { AuditDelete } from '../decorators/auditLog.decorator';
+import { AuditLogEntityTypes } from '../constants/auditLog.constants';
+import { ForbiddenError, NotFoundError } from '../helpers/errors.helper';
 
 export class TicketMessageService {
   private ticketMessageRepository: Repository<TicketMessage>;
@@ -57,5 +60,46 @@ export class TicketMessageService {
       page: Number(page),
       size: Number(size),
     });
+  }
+
+  /**
+   * DELETE TICKET MESSAGE
+   */
+  @AuditDelete({
+    entityType: AuditLogEntityTypes.TICKET_MESSAGE,
+    getEntityId: (args) => args[0].id,
+    getUserId: (args) => args[1]?.createdById,
+  })
+  async deleteTicketMessage(
+    id: UUID,
+    metadata: { createdById: UUID }
+  ): Promise<void> {
+    // CHECK IF TICKET MESSAGE EXISTS
+    const ticketMessage = await this.ticketMessageRepository.findOne({
+      where: { id },
+    });
+
+    // CHECK IF TICKET MESSAGE EXISTS
+    if (!ticketMessage) {
+      throw new NotFoundError('Ticket message not found');
+    }
+
+    // CHECK IF USER IS THE CREATOR OF THE TICKET MESSAGE
+    if (ticketMessage.createdById !== metadata.createdById) {
+      throw new ForbiddenError(
+        'You are not allowed to delete this ticket message'
+      );
+    }
+
+    await this.ticketMessageRepository.delete(id);
+  }
+
+  /**
+   * CREATE TICKET MESSAGE
+   */
+  async createTicketMessage(
+    ticketMessage: Partial<TicketMessage>,
+  ): Promise<TicketMessage> {
+    return this.ticketMessageRepository.save(ticketMessage);
   }
 }
