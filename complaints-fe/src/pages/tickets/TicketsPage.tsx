@@ -14,7 +14,7 @@ const TicketsPage = () => {
    * STATE VARIABLES
    */
   const { ticketsList } = useAppSelector((state) => state.ticket);
-  const { permissions } = useAppSelector((state) => state.auth);
+  const { permissions, user } = useAppSelector((state) => state.auth);
 
   /**
    * NAVIGATION
@@ -37,12 +37,31 @@ const TicketsPage = () => {
 
   useEffect(() => {
     let status: string | null = null;
+    let createdById: string | null = null;
+    let assignedInstitutionId: string | null = null;
+
     if (searchParams.get('status') && searchParams.get('status') !== 'null') {
       status = searchParams.get('status') as string;
     }
 
-    fetchTickets({ page, size, status });
-  }, [fetchTickets, page, size, searchParams]);
+    if (permissions?.length <= 0 && !user?.institution?.id && user?.id) {
+      createdById = user?.id;
+    }
+
+    if (user?.institution) {
+      assignedInstitutionId = user?.institution?.id;
+    }
+
+    fetchTickets({ page, size, status, createdById, assignedInstitutionId });
+  }, [
+    fetchTickets,
+    page,
+    size,
+    searchParams,
+    permissions?.length,
+    user?.institution,
+    user?.id,
+  ]);
 
   // TICKET COLUMNS
   const { ticketColumns } = useTicketColumns();
@@ -53,7 +72,7 @@ const TicketsPage = () => {
         <nav className="w-full flex flex-col gap-4">
           <ul className="w-full flex items-center gap-3 justify-between">
             <Heading>Tickets</Heading>
-            {permissions?.length <= 0 && (
+            {permissions?.length <= 0 && !user?.institution && (
               <Button to={`/tickets/create`} icon={faPlus}>
                 Create ticket
               </Button>

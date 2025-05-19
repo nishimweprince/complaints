@@ -4,7 +4,13 @@ import { baseQuery } from '../root.api';
 export const apiQuerySlice = createApi({
   reducerPath: 'apiQuery',
   baseQuery,
-  tagTypes: ['Institutions', 'Categories', 'Tickets', 'TicketMessages', 'Dashboard'],
+  tagTypes: [
+    'Institutions',
+    'Categories',
+    'Tickets',
+    'TicketMessages',
+    'Dashboard',
+  ],
   endpoints: (builder) => ({
     /**
      * INSTITUTIONS
@@ -38,9 +44,23 @@ export const apiQuerySlice = createApi({
 
     // FETCH TICKETS
     fetchTickets: builder.query({
-      query: ({ page, size, searchQuery, status }) => ({
+      query: ({
+        page,
+        size,
+        searchQuery,
+        status,
+        createdById,
+        assignedInstutionId,
+      }) => ({
         url: '/tickets',
-        params: { page, size, searchQuery, status },
+        params: {
+          page,
+          size,
+          searchQuery,
+          status,
+          createdById,
+          assignedInstutionId,
+        },
       }),
       providesTags: ['Tickets'],
     }),
@@ -84,12 +104,17 @@ export const apiQuerySlice = createApi({
 
     // COUNT TICKETS BY STATUS
     countTicketsByStatus: builder.query({
-      query: ({
-        institutionId,
-        createdById,
-        statuses,
-      }) => ({
+      query: ({ institutionId, createdById, statuses }) => ({
         url: '/dashboard/tickets/count-by-status',
+        params: { institutionId, createdById, statuses },
+      }),
+      providesTags: ['Dashboard'],
+    }),
+
+    // GET TICKETS TREND
+    getTicketsTrends: builder.query({
+      query: ({ institutionId, createdById, statuses }) => ({
+        url: '/dashboard/tickets/trends',
         params: { institutionId, createdById, statuses },
       }),
       providesTags: ['Dashboard'],
@@ -105,4 +130,5 @@ export const {
   useLazyFetchTicketMessagesQuery,
   useLazyFetchEntityHistoryQuery,
   useLazyCountTicketsByStatusQuery,
+  useLazyGetTicketsTrendsQuery,
 } = apiQuerySlice;

@@ -2,86 +2,124 @@ import AppLayout from '@/containers/navigation/AppLayout';
 import { DashboardCard } from '@/containers/dashboard/DashboardCard';
 import { TicketStatus } from '@/constants/ticket.constants';
 import { useNavigate } from 'react-router-dom';
-import { capitalizeString } from '@/helpers/strings.helper';
+import { capitalizeString, formatDate } from '@/helpers/strings.helper';
 import { Heading } from '@/components/inputs/TextInputs';
 import DashboardGraph from '@/containers/dashboard/DashboardGraph';
+import {
+  useCountTicketsByStatus,
+  useGetTicketsTrends,
+} from '@/usecases/dashboard/dashboard.hooks';
+import { useEffect, useMemo } from 'react';
+import { useAppSelector } from '@/states/hooks';
 
 const CitizenDashboard = () => {
+  /**
+   * STATE VARIABLES
+   */
+  const { user } = useAppSelector((state) => state.auth);
+
   /**
    * NAVIGATION
    */
   const navigate = useNavigate();
 
-  // Mock data - replace with actual data from your API
-  const ticketsData = [
-    { label: TicketStatus.OPEN, value: 12 },
-    { label: TicketStatus.PENDING, value: 8 },
-    { label: TicketStatus.RESOLVED, value: 45 },
-    { label: TicketStatus.CLOSED, value: 23 },
-  ];
+  // TICKET STATUS DATA
+  const ticketsData = useMemo(
+    () => [
+      TicketStatus.OPEN,
+      TicketStatus.ANSWERED,
+      TicketStatus.REOPENED,
+      TicketStatus.CLOSED,
+    ],
+    []
+  );
 
-  // Generate sample data for the last 7 days
-  const generateSampleGraphData = () => {
-    const today = new Date();
-    const data = [];
-    
-    for (let i = 6; i >= 0; i--) {
-      const date = new Date(today);
-      date.setDate(date.getDate() - i);
-      
-      // Generate random but somewhat realistic ticket numbers
-      const baseValue = 15; // Base number of tickets
-      const randomVariation = Math.floor(Math.random() * 10) - 5; // Random variation between -5 and +5
-      const value = Math.max(0, baseValue + randomVariation); // Ensure non-negative
-      
-      data.push({
-        date: date.toLocaleDateString('en-US', { weekday: 'short' }), // e.g., "Mon", "Tue"
-        value: value
-      });
-    }
-    
-    return data;
-  };
+  /**
+   * USE CASES
+   */
 
-  const graphData = generateSampleGraphData();
+  // COUNT TICKETS BY STATUS
+  const {
+    countTicketsByStatus,
+    countTicketsByStatusIsFetching,
+    ticketsByStatusData,
+  } = useCountTicketsByStatus();
+
+  useEffect(() => {
+    countTicketsByStatus({
+      createdById: user?.id,
+      statuses: ticketsData?.join(','),
+    });
+  }, [countTicketsByStatus, ticketsData, user?.id]);
+
+  // GET TICKETS TREND
+  const { getTicketsTrend, getTicketsTrendIsFetching, ticketsTrendData } =
+    useGetTicketsTrends();
+
+  useEffect(() => {
+    getTicketsTrend({
+      createdById: user?.id,
+      statuses: ticketsData?.join(','),
+    });
+  }, [getTicketsTrend, ticketsData, user?.id]);
 
   return (
     <AppLayout>
       <main className="p-6 space-y-6">
         <header>
-          <Heading type="h1" className="text-2xl font-semibold text-gray-900 mb-6">
+          <Heading
+            type="h1"
+            className="text-2xl font-semibold text-gray-900 mb-6"
+          >
             Overview
           </Heading>
         </header>
-        
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {ticketsData &&
-            ticketsData.map((ticket) => (
-              <DashboardCard
-                key={ticket.label}
-                label={ticket.label}
-                value={ticket.value}
-                onActionClick={(e) => {
-                  e.preventDefault();
-                  navigate(`/tickets?status=${ticket.label}`);
-                }}
-                actionLabel={`View ${capitalizeString(ticket.label)}`}
-              />
-            ))}
-        </section>
 
-        <section className="bg-white rounded-xl p-6 shadow-md">
+        <section>
           <header className="mb-4">
             <Heading type="h2" className="text-lg font-semibold text-gray-900">
-              Ticket Trends
+              Ticket Status
+            </Heading>
+            <p className="text-sm text-gray-600">
+              Current distribution of your tickets by status
+            </p>
+          </header>
+          <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {ticketsData?.map((ticket) => (
+              <DashboardCard
+                key={ticket}
+                label={ticket}
+                isLoading={countTicketsByStatusIsFetching}
+                value={
+                  ticketsByStatusData?.find((t) => t.label === ticket)?.value ??
+                  0
+                }
+                onActionClick={(e) => {
+                  e.preventDefault();
+                  navigate(`/tickets?status=${ticket}`);
+                }}
+                actionLabel={`View ${capitalizeString(ticket)}`}
+              />
+            ))}
+          </section>
+        </section>
+
+        <section>
+          <header className="mb-4">
+            <Heading type="h2" className="text-lg font-semibold text-gray-900">
+              Ticket Volume Trend
             </Heading>
             <p className="text-sm text-gray-600">
               Number of tickets created over the last 7 days
             </p>
           </header>
-          <figure className="h-[300px]">
+          <figure className="h-[350px]">
             <DashboardGraph
-              data={graphData}
+              isLoading={getTicketsTrendIsFetching}
+              data={ticketsTrendData?.map((t) => ({
+                date: formatDate(t.label, 'DD/MM HH:mm'),
+                value: t.value,
+              }))}
               dataKey="date"
               height="100%"
               fill="#E0F2FE"

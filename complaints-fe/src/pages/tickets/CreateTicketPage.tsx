@@ -75,14 +75,19 @@ const CreateTicketPage = () => {
         <nav className="w-full flex flex-col items-center gap-4">
           <Heading>Submit complaint</Heading>
         </nav>
-        <section className="w-full flex flex-col gap-4">
+        <section className="w-full flex flex-col gap-4 px-4 sm:px-6">
           <form
-            className="w-full flex flex-col gap-6 max-w-[60%] m-auto shadow-md p-4 rounded-md"
+            className="w-full flex flex-col gap-6 max-w-full sm:max-w-[90%] md:max-w-[80%] lg:max-w-[70%] m-auto shadow-md p-4 sm:p-6 rounded-md"
             onSubmit={onSubmit}
           >
-            <Heading type="h3" className="text-center">
+            <Heading type="h3" className="text-center text-lg sm:text-xl">
               Please provide the following details
             </Heading>
+            <p className="text-gray-700 text-center text-wrap text-xs sm:text-sm font-medium max-w-full sm:max-w-[90%] m-auto">
+              If you are not sure of the institution or category, you can leave
+              these fields empty. Our AI system will help categorize your ticket
+              and assign it to the appropriate institution.
+            </p>
             <fieldset className="w-full flex flex-col gap-4">
               <Controller
                 name="title"
@@ -100,7 +105,7 @@ const CreateTicketPage = () => {
                   />
                 )}
               />
-              <ul className="w-full grid grid-cols-2 gap-4 justify-between">
+              <ul className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4 justify-between">
                 <Controller
                   name="priority"
                   control={control}
@@ -130,8 +135,8 @@ const CreateTicketPage = () => {
                         value: category?.id,
                       }))}
                       {...field}
-                      label="Category"
-                      placeholder="Select category"
+                      label="Category (optional)"
+                      placeholder="Select category (optional)"
                     />
                   )}
                 />
@@ -161,20 +166,29 @@ const CreateTicketPage = () => {
                       value: institution?.id,
                     }))}
                     {...field}
-                    label="Institution"
-                    placeholder="Select institution"
+                    label="Institution (optional)"
+                    placeholder="Select institution (optional)"
                     isLoading={institutionsIsFetching}
                   />
                 )}
               />
             </fieldset>
-            <Button
-              type="submit"
-              className="w-full"
-              isLoading={createTicketIsLoading}
-            >
-              Submit
-            </Button>
+            <menu className="w-full flex flex-col sm:flex-row items-center gap-3 justify-between">
+              <Button 
+                variant='secondary' 
+                to={`/tickets`}
+                className="w-full sm:w-auto"
+              >
+                Back
+              </Button>
+              <Button
+                type="submit"
+                className="w-full sm:w-auto"
+                isLoading={createTicketIsLoading}
+              >
+                Submit
+              </Button>
+            </menu>
           </form>
         </section>
       </main>

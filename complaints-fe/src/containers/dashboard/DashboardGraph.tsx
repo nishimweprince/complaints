@@ -60,7 +60,7 @@ const DashboardGraph = ({
 
   return (
     <ResponsiveContainer height={height} width={width}>
-      <ComposedChart compact data={data}>
+      <ComposedChart compact data={data} margin={{ left: 10, right: 10, top: 10, bottom: 30 }}>
         <Area
           connectNulls
           dataKey="value"
@@ -71,7 +71,14 @@ const DashboardGraph = ({
           stroke="#056025"
           type={type}
         />
-        <XAxis dataKey={dataKey} />
+        <XAxis 
+          dataKey={dataKey}
+          padding={{ left: 20, right: 20 }}
+          tick={{ fontSize: 12 }}
+          angle={-45}
+          textAnchor="end"
+          height={60}
+        />
         <Legend />
         <YAxis
           allowDataOverflow
