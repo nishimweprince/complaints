@@ -2,204 +2,167 @@
 
 A modern, user-friendly web application for managing and tracking complaints and service requests. Built with React, TypeScript, and Vite, this system provides a robust platform for institutions to handle customer complaints efficiently and transparently.
 
-## 🌟 Overview
+## 🎯 Core Features
 
-The Complaints Management System is designed to streamline the process of handling customer complaints and service requests. It enables institutions to:
+### 📊 Interactive Dashboard
+- Real-time overview of complaint statistics
+- Visual representation of ticket status distribution
+- Performance metrics for institutions and staff
+- Quick access to critical tickets
+```typescript
+// Example dashboard metrics
+interface DashboardMetrics {
+  totalTickets: number;
+  openTickets: number;
+  resolvedThisWeek: number;
+  averageResolutionTime: string;
+  ticketsByPriority: Record<Priority, number>;
+  ticketsByStatus: Record<Status, number>;
+}
+```
 
-- Receive and track customer complaints
-- Assign and manage tickets
-- Monitor complaint resolution progress
-- Maintain a complete audit trail of all actions
-- Provide transparent communication between customers and institutions
+### 📝 Comprehensive Ticket Management
+- Create and track complaints with detailed information
+- Real-time status updates (OPEN, ANSWERED, REOPENED, CLOSED)
+- Priority-based routing (LOW, MEDIUM, HIGH, CRITICAL)
+- Category and institution assignment
+- Staff assignment and workload management
 
-## 🚀 Key Features
+### 📜 Detailed Audit History
+- Complete timeline of all ticket changes
+- Track modifications to:
+  ```typescript
+  interface AuditLog {
+    ticketId: string;
+    action: 'STATUS_CHANGE' | 'ASSIGNMENT_CHANGE' | 'PRIORITY_CHANGE';
+    oldValue: any;
+    newValue: any;
+    changedBy: User;
+    timestamp: Date;
+  }
+  ```
+- User accountability and action tracking
+- Visual timeline representation
+- Side-by-side comparison of changes
 
-### 1. Ticket Management
-- **Create Tickets**: Users can submit complaints with detailed information
-- **Ticket Status Tracking**: Monitor tickets through various stages (OPEN, ANSWERED, REOPENED, CLOSED)
-- **Priority Management**: Set and update ticket priorities (LOW, MEDIUM, HIGH, CRITICAL)
-- **Category Assignment**: Organize tickets by service categories
-- **Institution Assignment**: Route tickets to appropriate institutions
-- **User Assignment**: Assign specific staff members to handle tickets
-
-### 2. Audit Logging
-- **Complete History**: Track all changes made to tickets
-- **Change Tracking**: Monitor modifications to:
-  - Ticket status
-  - Assigned users
-  - Assigned institutions
-  - Priority levels
-- **User Accountability**: Record who made each change
-- **Timeline View**: Visual representation of ticket history
-- **Change Comparison**: Side-by-side view of old and new values
-
-### 3. User Management
-- **Role-Based Access**: Different access levels for different user types
-- **Institution Management**: Organize users by institutions
-- **User Profiles**: Detailed user information and activity tracking
-
-### 4. Institution Management
-- **Service Categories**: Define service categories for each institution
-- **Staff Assignment**: Manage institution staff and their roles
-- **Performance Tracking**: Monitor institution response times and resolution rates
-
-## 🛠️ Technical Setup
+## 🚀 Quick Start
 
 ### Prerequisites
 - Node.js (v16 or higher)
-- npm or yarn package manager
+- npm or yarn
 - Git
 
-### Installation
+### First-Time Setup
 
-1. **Clone the Repository**
+1. **Clone and Install**
    ```bash
+   # Clone the repository
    git clone [repository-url]
    cd complaints-fe
-   ```
 
-2. **Install Dependencies**
-   ```bash
+   # Install dependencies
    npm install
    # or
    yarn install
    ```
 
-3. **Environment Setup**
-   - Copy `.env.example` to `.env`
-   - Update environment variables with your configuration
+2. **Environment Configuration**
+   Create a `.env` file in the root directory with the following variables:
+   ```env
+   # API Configuration
+   VITE_API_BASE_URL=http://localhost:3000
+   VITE_API_TIMEOUT=30000
 
-4. **Start Development Server**
+   # Authentication
+   VITE_AUTH_TOKEN_KEY=auth_token
+   VITE_REFRESH_TOKEN_KEY=refresh_token
+
+   # Feature Flags
+   VITE_ENABLE_AUDIT_LOGS=true
+   VITE_ENABLE_DASHBOARD=true
+
+   # Optional: Analytics
+   VITE_ENABLE_ANALYTICS=false
+   VITE_ANALYTICS_ID=your-analytics-id
+   ```
+
+3. **Start Development Server**
    ```bash
    npm run dev
    # or
    yarn dev
    ```
 
-5. **Build for Production**
-   ```bash
-   npm run build
-   # or
-   yarn build
-   ```
+4. **Access the Application**
+   Open [http://localhost:5173](http://localhost:5173) in your browser
 
 ## 📁 Project Structure
 
 ```
 src/
-├── adapters/        # Data transformation and API adapters
 ├── api/            # API integration and services
 ├── components/     # Reusable UI components
-├── constants/      # Application constants and enums
-├── containers/     # Complex components and business logic
-├── helpers/        # Utility functions and helpers
+├── containers/     # Complex components with business logic
 ├── hooks/          # Custom React hooks
-├── lib/           # Third-party library configurations
-├── pages/         # Application pages and routes
-├── routes/        # Route definitions and navigation
-├── states/        # State management (Redux)
-├── types/         # TypeScript type definitions
-└── usecases/      # Business logic and use cases
+├── pages/          # Application pages
+│   ├── dashboard/  # Dashboard components
+│   ├── tickets/    # Ticket management
+│   └── audit/      # Audit logs
+├── states/         # Redux state management
+├── types/          # TypeScript definitions
+└── usecases/       # Business logic implementation
 ```
 
-## 🔑 Key Directories Explained
+## 🛠️ Development
 
-### `/src/components`
-Contains reusable UI components like:
-- Buttons
-- Form inputs
-- Status badges
-- User labels
-- Loading indicators
+### Available Scripts
+```bash
+# Start development server
+npm run dev
 
-### `/src/pages`
-Main application pages:
-- Ticket listing and details
-- Audit logs
-- User management
-- Institution management
+# Build for production
+npm run build
 
-### `/src/usecases`
-Business logic implementation:
-- Ticket management
-- Audit logging
-- User operations
-- Institution operations
+# Run linter
+npm run lint
 
-### `/src/states`
-State management using Redux:
-- Authentication state
-- Ticket state
-- Audit log state
-- User state
+# Preview production build
+npm run preview
+```
 
-## 🎨 UI/UX Features
+### Key Technologies
+- **Frontend**: React 19, TypeScript, Vite
+- **State Management**: Redux Toolkit
+- **Styling**: Tailwind CSS
+- **UI Components**: Radix UI
+- **Forms**: React Hook Form
+- **Charts**: Recharts
+- **Notifications**: Sonner
 
-### Modern Design
-- Clean and intuitive interface
-- Responsive layout for all devices
-- Consistent color scheme and typography
-- Clear visual hierarchy
+## 🔒 Security
 
-### User Experience
-- Real-time updates
-- Intuitive navigation
-- Clear status indicators
-- Helpful tooltips and guides
-- Smooth transitions and animations
-
-## 🔒 Security Features
-
-- Role-based access control
-- Secure authentication
+- Role-based access control (RBAC)
+- JWT-based authentication
 - Protected routes
-- Data validation
-- Audit logging for all actions
+- Secure API communication
+- Comprehensive audit logging
 
 ## 📱 Responsive Design
 
-The application is fully responsive and works seamlessly on:
-- Desktop computers
-- Tablets
-- Mobile phones
+The application is fully responsive and optimized for:
+- Desktop (1920px, 1440px, 1024px)
+- Tablet (768px)
+- Mobile (480px, 320px)
 
-## 🛠️ Development Tools
+## 🤝 Support
 
-- **React**: Frontend framework
-- **TypeScript**: Type-safe programming
-- **Vite**: Fast development and building
-- **Redux**: State management
-- **React Router**: Navigation
-- **Tailwind CSS**: Styling
-- **ESLint**: Code quality
-- **Prettier**: Code formatting
+For technical support or feature requests, please contact:
+- Email: [princeelysee@gmail.com](mailto:princeelysee@gmail.com)
 
-## 🤝 Contributing
+## 📈 Roadmap
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
-
-## 👥 Support
-
-For support, please contact [princeelysee@gmail.com](mailto:princeelysee@gmail.com)
-
-## 🔄 Updates and Maintenance
-
-The application is regularly updated with:
-- Bug fixes
-- Security patches
-- New features
-- Performance improvements
-
-## 📈 Future Enhancements
-
-Planned features include:
-- Advanced reporting
-- Analytics dashboard
+- Advanced analytics dashboard
+- Real-time notifications
 - Mobile application
-- Integration with external systems
-- Enhanced notification system
+- External system integrations
+- Enhanced reporting capabilities
