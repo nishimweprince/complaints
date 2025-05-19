@@ -5,8 +5,8 @@
 A full-stack application for managing citizen complaints and engagement, featuring AI-powered ticket routing, real-time analytics, and comprehensive audit logging.
 
 ## 📱 Live Demo
-- **Live URL**: [Coming Soon]
-- **Demo Video**: [Coming Soon]
+- **Live URL**: [https://complaints.basis.rw](https://complaints.basis.rw)
+- **Demo Video**: [Google Drive](https://drive.google.com/drive/folders/1xUkTTlyH-oFf-LHbOszWEDcDhyo1Oh2P?usp=sharing)
 - **Technical Documentation**: [Citizen Complaints and Engagement System](https://deepwiki.com/nishimweprince/complaints)
 
 ## 🏗️ Project Structure
