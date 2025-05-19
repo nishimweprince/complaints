@@ -1,6 +1,6 @@
 # Citizen Complaints and Engagement System - Backend
 
-This is the backend service for the Citizen Complaints and Engagement System, built with Node.js, Express, TypeScript, and TypeORM. The system provides a robust API for managing citizen complaints, with AI-powered ticket routing and comprehensive audit logging.
+This is the backend service for the Citizen Complaints and Engagement System, built with Node.js, Express, TypeScript, and TypeORM. The system provides a robust API for managing citizen complaints, with AI-powered ticket routing and comprehensive audit logging. This is a sub-project of the Citizen Complaints and Engagement System.
 
 ## Key Features
 
