@@ -20,7 +20,7 @@ import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
 import { Controller, useForm } from 'react-hook-form';
 import TextArea from '@/components/inputs/TextArea';
 import CustomTooltip from '@/components/custom/CustomTooltip';
-import Loader from '@/components/inputs/Loader';
+import Loader, { SkeletonLoader } from '@/components/inputs/Loader';
 import Button from '@/components/inputs/Button';
 
 const Message = ({
@@ -264,8 +264,39 @@ const TicketDetailsPage = () => {
     <AppLayout>
       <main className="w-full mx-auto px-4 py-4 flex flex-col h-full">
         {ticketIsFetching ? (
-          <section className="bg-white rounded-lg shadow-sm p-4 animate-pulse flex justify-center">
-            <p>Loading ticket details...</p>
+          <section className="bg-white rounded-lg shadow-sm p-4">
+            <section className="flex flex-col gap-4">
+              {/* Header skeleton */}
+              <header className="flex items-center justify-between">
+                <SkeletonLoader className="h-6 w-48" />
+                <SkeletonLoader className="h-8 w-24" />
+              </header>
+              
+              {/* Status and priority skeleton */}
+              <nav className="flex gap-4">
+                <SkeletonLoader className="h-6 w-32" />
+                <SkeletonLoader className="h-6 w-32" />
+              </nav>
+
+              {/* Description skeleton */}
+              <article className="space-y-2">
+                <SkeletonLoader className="h-4 w-24" />
+                <SkeletonLoader className="h-4 w-full" />
+                <SkeletonLoader className="h-4 w-3/4" />
+              </article>
+
+              {/* Metadata skeleton */}
+              <section className="grid grid-cols-2 gap-4 mt-4">
+                <menu className="space-y-2">
+                  <SkeletonLoader className="h-4 w-20" />
+                  <SkeletonLoader className="h-4 w-32" />
+                </menu>
+                <menu className="space-y-2">
+                  <SkeletonLoader className="h-4 w-20" />
+                  <SkeletonLoader className="h-4 w-32" />
+                </menu>
+              </section>
+            </section>
           </section>
         ) : ticket ? (
           <TicketDetails ticket={ticket} />
@@ -285,9 +316,25 @@ const TicketDetailsPage = () => {
             }}
           >
             {ticketMessagesIsFetching ? (
-              <section className="p-4 animate-pulse flex justify-center">
-                <p>Loading messages...</p>
-              </section>
+              <menu className="p-4 space-y-4">
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <article key={index} className="flex flex-col gap-2">
+                    {/* Message header skeleton */}
+                    <header className="flex items-center gap-2">
+                      <SkeletonLoader className="h-8 w-8 rounded-full" />
+                      <section className="flex flex-col gap-1">
+                        <SkeletonLoader className="h-4 w-32" />
+                        <SkeletonLoader className="h-3 w-24" />
+                      </section>
+                    </header>
+                    {/* Message content skeleton */}
+                    <section className="ml-10 space-y-2">
+                      <SkeletonLoader className="h-4 w-3/4" />
+                      <SkeletonLoader className="h-4 w-1/2" />
+                    </section>
+                  </article>
+                ))}
+              </menu>
             ) : ticketMessagesList.length > 0 ? (
               <menu className="p-4">
                 {ticketMessagesList.map((message) => (

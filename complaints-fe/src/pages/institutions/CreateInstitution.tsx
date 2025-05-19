@@ -1,19 +1,20 @@
-import Modal from "@/components/cards/Modal";
-import Button from "@/components/inputs/Button";
-import { InputErrorMessage } from "@/components/inputs/ErrorLabels";
-import Input from "@/components/inputs/Input";
-import TextArea from "@/components/inputs/TextArea";
-import { Heading } from "@/components/inputs/TextInputs";
-import { capitalizeString } from "@/helpers/strings.helper";
-import validateInputs from "@/helpers/validations.helper";
-import { useAppDispatch, useAppSelector } from "@/states/hooks";
-import { setCreateInstitutionModal } from "@/states/slices/institutionSlice";
-import { useFetchCategories } from "@/usecases/categories/category.hooks";
-import { useCreateInstitution } from "@/usecases/institutions/institution.hooks";
-import { useCallback, useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-import { toast } from "sonner";
+import Modal from '@/components/cards/Modal';
+import Button from '@/components/inputs/Button';
+import { InputErrorMessage } from '@/components/inputs/ErrorLabels';
+import Input from '@/components/inputs/Input';
+import { SkeletonLoader } from '@/components/inputs/Loader';
+import TextArea from '@/components/inputs/TextArea';
+import { Heading } from '@/components/inputs/TextInputs';
+import { capitalizeString } from '@/helpers/strings.helper';
+import validateInputs from '@/helpers/validations.helper';
+import { useAppDispatch, useAppSelector } from '@/states/hooks';
+import { setCreateInstitutionModal } from '@/states/slices/institutionSlice';
+import { useFetchCategories } from '@/usecases/categories/category.hooks';
+import { useCreateInstitution } from '@/usecases/institutions/institution.hooks';
+import { useCallback, useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const CreateInstitution = () => {
   /**
@@ -27,7 +28,7 @@ const CreateInstitution = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   // USE CASES
-  const { fetchCategories } = useFetchCategories();
+  const { fetchCategories, categoriesIsFetching } = useFetchCategories();
   const {
     createInstitution,
     createInstitutionIsLoading,
@@ -37,7 +38,7 @@ const CreateInstitution = () => {
   // FETCH CATEGORIES
   useEffect(() => {
     if (createInstitutionModal) {
-      fetchCategories({ searchQuery: "" });
+      fetchCategories({ searchQuery: '' });
     }
   }, [fetchCategories, createInstitutionModal]);
 
@@ -56,12 +57,12 @@ const CreateInstitution = () => {
   // HANDLE FORM SUBMISSION
   const onSubmit = handleSubmit((data) => {
     if (selectedCategories.length === 0) {
-      setError("categories", {
-        message: "Please select at least one category",
+      setError('categories', {
+        message: 'Please select at least one category',
       });
       return;
     } else {
-      clearErrors("categories");
+      clearErrors('categories');
     }
 
     createInstitution({
@@ -80,16 +81,16 @@ const CreateInstitution = () => {
   const closeModal = useCallback(() => {
     dispatch(setCreateInstitutionModal(false));
     reset({
-      name: "",
-      description: "",
-      email: "",
+      name: '',
+      description: '',
+      email: '',
     });
     setSelectedCategories([]);
   }, [dispatch, reset, setSelectedCategories]);
 
   useEffect(() => {
     if (createInstitutionIsSuccess) {
-      toast.success("Institution created successfully");
+      toast.success('Institution created successfully');
       closeModal();
     }
   }, [createInstitutionIsSuccess, closeModal]);
@@ -130,6 +131,16 @@ const CreateInstitution = () => {
             )}
           />
         </fieldset>
+        {categoriesIsFetching && (
+          <menu className="w-full grid grid-cols-4 gap-4 justify-between">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <SkeletonLoader
+                key={index}
+                className="w-full h-[30px] bg-gray-200 rounded-md"
+              />
+            ))}
+          </menu>
+        )}
         {categoriesList?.length > 0 && (
           <menu className="w-full flex flex-col gap-3">
             <Heading type="h4">Select categories</Heading>
@@ -145,7 +156,7 @@ const CreateInstitution = () => {
                         setSelectedCategories(
                           selectedCategories.filter((c) => c !== category?.name)
                         );
-                        clearErrors("categories");
+                        clearErrors('categories');
                       } else {
                         setSelectedCategories([
                           ...selectedCategories,
@@ -156,8 +167,8 @@ const CreateInstitution = () => {
                     key={index}
                     className={`w-full p-1 px-3 rounded-md text-[12px] text-center ${
                       isSelected
-                        ? "bg-green-700 text-white"
-                        : "bg-background text-black shadow-sm"
+                        ? 'bg-green-700 text-white'
+                        : 'bg-background text-black shadow-sm'
                     }`}
                   >
                     {capitalizeString(category?.name)}
@@ -183,7 +194,7 @@ const CreateInstitution = () => {
                 required: `Please provide the email of the admin`,
                 validate: (value) => {
                   return (
-                    validateInputs(value, "email") || "Invalid email address"
+                    validateInputs(value, 'email') || 'Invalid email address'
                   );
                 },
               }}
@@ -200,7 +211,7 @@ const CreateInstitution = () => {
           </fieldset>
         </menu>
         <Button
-          isLoading={createInstitutionIsLoading}
+          isLoading={createInstitutionIsLoading || categoriesIsFetching}
           primary
           className="self-end"
           type="submit"

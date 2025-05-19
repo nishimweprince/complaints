@@ -4,7 +4,7 @@
   "description": "Backend for Citizen Complaints and Engagement System",
   "main": "src/server.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "npm i && tsc",
     "dev": "nodemon --exec ts-node ./src/server.ts",
     "start": "npm i && tsc && node ./dist/server.js"
   },
@@ -16,6 +16,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.51.0",
     "@sendgrid/mail": "^8.1.5",
+    "@types/express": "^5.0.2",
     "bcrypt": "^6.0.0",
     "class-validator": "^0.14.2",
     "cors": "^2.8.5",
@@ -31,7 +32,6 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.14.0",
