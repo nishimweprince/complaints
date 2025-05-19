@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/table";
 
 import { DataTablePagination } from "@/components/table/TablePagination";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { UnknownAction } from "@reduxjs/toolkit";
 
 interface DataTableProps<TData, TValue> {
@@ -40,7 +40,7 @@ interface DataTableProps<TData, TValue> {
   setPage?: (page: number) => UnknownAction;
   setSize?: (size: number) => UnknownAction;
   isLoading?: boolean;
-  noDataMessage?: string;
+  noDataMessage?: string | ReactNode;
 }
 
 export default function Table<TData, TValue>({

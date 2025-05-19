@@ -9,11 +9,17 @@ import CreateTicketPage from '@/pages/tickets/CreateTicketPage';
 import TicketDetailsPage from '@/pages/tickets/TicketDetailsPage';
 import TicketHistoryPage from '@/pages/tickets/TicketHistoryPage';
 import Signup from '@/pages/auth/Signup';
+import NotFoundPage from '@/pages/common/NotFoundPage';
 
 const Router = () => {
   return (
     <Routes>
+
+      {/**
+       * COMMON ROUTES
+       */}
       <Route path="/" element={<LandingPage />} />
+      <Route path="*" element={<NotFoundPage />} />
 
       {/**
        * AUTH ROUTES

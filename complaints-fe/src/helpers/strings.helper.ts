@@ -63,10 +63,9 @@ export const getStatusBackgroundColor = (status?: string) => {
   let bgColor =
     'bg-gray-700 text-center p-[3px] px-4 text-white text-normal rounded-md text-[12px]';
   switch (status) {
-    case 'PENDING':
     case 'OPEN':
       bgColor =
-        'bg-yellow-700 text-center p-1 px-4 text-white text-normal rounded-lg text-[12px]';
+        'bg-primary text-center p-1 px-4 text-white text-normal rounded-lg text-[12px]';
       break;
     case 'COMPLETED':
       bgColor =
@@ -82,6 +81,7 @@ export const getStatusBackgroundColor = (status?: string) => {
         'bg-orange-700 text-center p-1 px-4 text-white text-normal rounded-lg text-[12px]';
       break;
     case 'REOPENED':
+    case 'PENDING':
       bgColor =
         'bg-yellow-700 text-center p-1 px-4 text-white text-normal rounded-lg text-[12px]';
       break;

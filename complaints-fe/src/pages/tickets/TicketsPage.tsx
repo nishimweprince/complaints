@@ -1,33 +1,51 @@
-import Button from "@/components/inputs/Button";
-import { Heading } from "@/components/inputs/TextInputs";
-import Table from "@/components/table/Table";
-import AppLayout from "@/containers/navigation/AppLayout";
-import { useTicketColumns } from "@/hooks/tickets/columns.ticket";
-import { useAppSelector } from "@/states/hooks";
-import { useFetchTickets } from "@/usecases/tickets/ticket.hooks";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { useEffect } from "react";
+import Button from '@/components/inputs/Button';
+import { Heading } from '@/components/inputs/TextInputs';
+import Table from '@/components/table/Table';
+import AppLayout from '@/containers/navigation/AppLayout';
+import { useTicketColumns } from '@/hooks/tickets/columns.ticket';
+import { useAppSelector } from '@/states/hooks';
+import { useFetchTickets } from '@/usecases/tickets/ticket.hooks';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 
 const TicketsPage = () => {
+  /**
+   * STATE VARIABLES
+   */
+  const { ticketsList } = useAppSelector((state) => state.ticket);
+  const { permissions } = useAppSelector((state) => state.auth);
 
-    /**
-     * STATE VARIABLES
-     */
-    const { ticketsList } = useAppSelector((state) => state.ticket)
-    const { permissions } = useAppSelector((state) => state.auth);
+  /**
+   * NAVIGATION
+   */
+  const [searchParams] = useSearchParams();
 
-    /**
-     * USE CASES
-     */
-    const { fetchTickets, page, size, totalCount, totalPages, setPage, setSize, ticketsIsFetching } =
-      useFetchTickets();
+  /**
+   * USE CASES
+   */
+  const {
+    fetchTickets,
+    page,
+    size,
+    totalCount,
+    totalPages,
+    setPage,
+    setSize,
+    ticketsIsFetching,
+  } = useFetchTickets();
 
-    useEffect(() => {
-        fetchTickets({ page, size });
-    }, [fetchTickets, page, size]);
+  useEffect(() => {
+    let status: string | null = null;
+    if (searchParams.get('status') && searchParams.get('status') !== 'null') {
+      status = searchParams.get('status') as string;
+    }
 
-    // TICKET COLUMNS
-    const { ticketColumns } = useTicketColumns();
+    fetchTickets({ page, size, status });
+  }, [fetchTickets, page, size, searchParams]);
+
+  // TICKET COLUMNS
+  const { ticketColumns } = useTicketColumns();
 
   return (
     <AppLayout>
@@ -36,7 +54,9 @@ const TicketsPage = () => {
           <ul className="w-full flex items-center gap-3 justify-between">
             <Heading>Tickets</Heading>
             {permissions?.length <= 0 && (
-              <Button to={`/tickets/create`} icon={faPlus}>Create ticket</Button>
+              <Button to={`/tickets/create`} icon={faPlus}>
+                Create ticket
+              </Button>
             )}
           </ul>
         </nav>
@@ -44,7 +64,23 @@ const TicketsPage = () => {
           <Table
             data={ticketsList}
             columns={ticketColumns}
-            noDataMessage="No tickets available"
+            noDataMessage={
+              <menu className="w-full flex flex-col gap-4 py-4">
+                <Heading type="h2">No tickets available</Heading>
+                <p className="text-[12px]">
+                  There are no tickets available for this status.
+                </p>
+                {searchParams.get('status') &&
+                  searchParams.get('status') !== 'null' && (
+                    <Link
+                      to={`/tickets`}
+                      className="text-[12px] bg-primary text-white px-4 py-2 rounded-md w-fit self-center"
+                    >
+                      Clear filters
+                    </Link>
+                  )}
+              </menu>
+            }
             isLoading={ticketsIsFetching}
             page={page}
             size={size}

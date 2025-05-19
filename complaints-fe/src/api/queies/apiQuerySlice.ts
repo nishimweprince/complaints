@@ -4,7 +4,7 @@ import { baseQuery } from '../root.api';
 export const apiQuerySlice = createApi({
   reducerPath: 'apiQuery',
   baseQuery,
-  tagTypes: ['Institutions', 'Categories', 'Tickets', 'TicketMessages'],
+  tagTypes: ['Institutions', 'Categories', 'Tickets', 'TicketMessages', 'Dashboard'],
   endpoints: (builder) => ({
     /**
      * INSTITUTIONS
@@ -38,9 +38,9 @@ export const apiQuerySlice = createApi({
 
     // FETCH TICKETS
     fetchTickets: builder.query({
-      query: ({ page, size, searchQuery }) => ({
+      query: ({ page, size, searchQuery, status }) => ({
         url: '/tickets',
-        params: { page, size, searchQuery },
+        params: { page, size, searchQuery, status },
       }),
       providesTags: ['Tickets'],
     }),
@@ -75,6 +75,25 @@ export const apiQuerySlice = createApi({
         params: { entityType, page, size },
       }),
     }),
+
+    /**
+     * DASHBOARD
+     */
+
+    // COUNT TICKETS
+
+    // COUNT TICKETS BY STATUS
+    countTicketsByStatus: builder.query({
+      query: ({
+        institutionId,
+        createdById,
+        statuses,
+      }) => ({
+        url: '/dashboard/tickets/count-by-status',
+        params: { institutionId, createdById, statuses },
+      }),
+      providesTags: ['Dashboard'],
+    }),
   }),
 });
 
@@ -85,4 +104,5 @@ export const {
   useLazyGetTicketByIdQuery,
   useLazyFetchTicketMessagesQuery,
   useLazyFetchEntityHistoryQuery,
+  useLazyCountTicketsByStatusQuery,
 } = apiQuerySlice;
