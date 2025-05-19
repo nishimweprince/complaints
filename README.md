@@ -1,8 +1,15 @@
 # Citizen Complaints and Engagement System
 
-This repository contains a full-stack application for managing citizen complaints and engagement. The system is split into two main components: a frontend application and a backend service.
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/nishimweprince/complaints)
 
-## Project Structure
+A full-stack application for managing citizen complaints and engagement, featuring AI-powered ticket routing, real-time analytics, and comprehensive audit logging.
+
+## 📱 Live Demo
+- **Live URL**: [Coming Soon]
+- **Demo Video**: [Coming Soon]
+- **Technical Documentation**: [Citizen Complaints and Engagement System](https://deepwiki.com/nishimweprince/complaints)
+
+## 🏗️ Project Structure
 
 ```
 complaints/
@@ -10,62 +17,104 @@ complaints/
 └── complaints-be/    # Backend service (Node.js + Express + TypeScript)
 ```
 
-## Frontend Application (`complaints-fe`)
+## 🎯 Frontend Application
 
-The frontend is built with React, TypeScript, and Vite, providing a modern and responsive user interface for citizens to submit and track complaints.
+A modern, responsive web application built with React and TypeScript that provides an intuitive interface for citizens to submit and track complaints.
 
-### Documentation
-- [Frontend README](./complaints-fe/README.md)
-- [Frontend API Documentation](./complaints-fe/src/api/README.md)
-
-### Key Features
-- Modern React with TypeScript
-- Vite for fast development and building
-- ESLint configuration for code quality
-- Component-based architecture
-
-## Backend Service (`complaints-be`)
-
-The backend service is built with Node.js, Express, and TypeScript, providing a robust API for managing complaints and user data.
-
-### Documentation
-- [Backend README](./complaints-be/README.md)
-- API documentation available at `/api-docs` when running the server
+### Tech Stack
+- **Framework**: React 19 + TypeScript
+- **Build Tool**: Vite
+- **State Management**: Redux Toolkit
+- **Styling**: Tailwind CSS
+- **UI Components**: Radix UI
+- **Forms**: React Hook Form
+- **Charts**: Recharts
+- **Notifications**: Sonner
 
 ### Key Features
-- RESTful API architecture
-- PostgreSQL database with TypeORM
-- JWT-based authentication
+- Interactive dashboard with real-time analytics
+- Comprehensive ticket management
+- Detailed audit history
+- Role-based access control
+- Responsive design for all devices
+
+## 🔧 Backend Service
+
+A robust RESTful API service built with Node.js and Express, providing secure and scalable endpoints for complaint management.
+
+### Tech Stack
+- **Runtime**: Node.js (v14+)
+- **Framework**: Express + TypeScript
+- **Database**: PostgreSQL
+- **ORM**: TypeORM
+- **Authentication**: JWT
+- **AI Integration**: Claude AI
+- **Email Service**: SendGrid
+
+### Key Features
+- AI-powered ticket routing
 - Comprehensive audit logging
-- Input validation and security measures
+- Role-based access control
+- Email notifications
+- Real-time analytics
+- Secure API endpoints
 
-## Getting Started
+## 📚 Documentation
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd complaints
-```
+For comprehensive documentation covering both frontend and backend components, including setup guides, API references, and deployment instructions, please refer to our [Project Documentation](https://deepwiki.com/nishimweprince/complaints).
 
-2. Set up the backend:
+## 🚀 Getting Started
+
+### Backend Setup
+1. Navigate to backend directory:
 ```bash
 cd complaints-be
+```
+
+2. Install dependencies:
+```bash
 npm install
-# Create .env file with required environment variables
+```
+
+3. Configure environment:
+```bash
+cp .env.example .env
+# Update .env with your configuration
+```
+
+4. Start development server:
+```bash
 npm run dev
 ```
 
-3. Set up the frontend:
+### Frontend Setup
+1. Navigate to frontend directory:
 ```bash
 cd complaints-fe
+```
+
+2. Install dependencies:
+```bash
 npm install
+```
+
+3. Configure environment:
+```bash
+cp .env.example .env
+# Update .env with your configuration
+```
+
+4. Start development server:
+```bash
 npm run dev
 ```
 
-## Development
+## 📞 Contact
 
-Both applications can be run in development mode with hot reloading enabled. See the respective README files for detailed setup instructions and available commands.
+For support, feature requests, or collaboration:
+- **Email**: [princeelysee@gmail.com](mailto:princeelysee@gmail.com)
+- **LinkedIn**: [/in/nishimweprince](https://www.linkedin.com/in/nishimweprince/)
 
-## License
+## 📄 License
 
 ISC 
