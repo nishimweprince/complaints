@@ -231,28 +231,28 @@ export class TicketService {
 
     let condition: FindOptionsWhere<Ticket> | FindOptionsWhere<Ticket>[] = {};
 
-    if (status) {
+    if (status && status !== 'null') {
       condition.status = status as TicketStatus;
     }
-    if (priority) {
+    if (priority && priority !== 'null') {
       condition.priority = priority as TicketPriority;
     }
-    if (assignedUserId) {
+    if (assignedUserId && assignedUserId !== 'null') {
       condition.assignedUserId = assignedUserId as UUID;
     }
-    if (assignedInstitutionId) {
+    if (assignedInstitutionId && assignedInstitutionId !== 'null') {
       condition.assignedInstitutionId = assignedInstitutionId as UUID;
     }
 
-    if (createdById) {
+    if (createdById && createdById !== 'null') {
       condition.createdById = createdById as UUID;
     }
 
-    if (categoryId) {
+    if (categoryId && categoryId !== 'null') {
       condition.categoryId = categoryId as UUID;
     }
 
-    if (searchQuery) {
+    if (searchQuery && searchQuery !== 'null') {
       condition = [
         {
           referenceId: ILike(`%${searchQuery}%`),

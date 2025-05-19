@@ -5,6 +5,7 @@ import institutionRoutes from './institution.routes';
 import ticketRoutes from './ticket.routes';
 import ticketMessageRoutes from './ticketMessage.routes';
 import auditLogRoutes from './auditLog.routes';
+import dashboardRoutes from './dashboard.routes';
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use('/categories', categoryRoutes);
 router.use('/tickets', ticketRoutes);
 router.use('/ticket-messages', ticketMessageRoutes);
 router.use('/audit-logs', auditLogRoutes);
+router.use('/dashboard', dashboardRoutes);
 
 export default router;

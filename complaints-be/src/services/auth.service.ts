@@ -119,10 +119,12 @@ export class AuthService {
     username,
     password,
     institutionId,
+    phoneNumber,
   }: {
     username: string;
     password: string;
     institutionId?: UUID;
+    phoneNumber?: string;
   }): Promise<{
     user: User;
     token: string;
@@ -143,11 +145,14 @@ export class AuthService {
       email: username,
       passwordHash,
       institutionId,
+      phoneNumber,
     });
 
     const token = jwt.sign(
       {
-        userId: newUser.id,
+        user: {
+          id: newUser?.id,
+        },
       },
       process.env.JWT_SECRET || ""
     );
